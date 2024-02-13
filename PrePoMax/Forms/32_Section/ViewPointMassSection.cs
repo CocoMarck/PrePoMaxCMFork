@@ -11,16 +11,16 @@ using CaeModel;
 namespace PrePoMax
 {
     [Serializable]
-    public class ViewDistributedMassSection : ViewSection
+    public class ViewPointMassSection : ViewSection
     {
         // Variables                                                                                                                
-        private DistributedMassSection _massSection;
+        private PointMassSection _massSection;
         
 
         // Properties                                                                                                               
         [CategoryAttribute("Data")]
         [OrderedDisplayName(6, 10, "Mass")]
-        [DescriptionAttribute("Enter the total mass to be distributed to the selected region.")]
+        [DescriptionAttribute("Enter the mass to be applied to each selected node.")]
         [TypeConverter(typeof(EquationMassConverter))]
         public EquationString Mass
         {
@@ -31,7 +31,7 @@ namespace PrePoMax
 
 
         // Constructors                                                                                                             
-        public ViewDistributedMassSection(DistributedMassSection massSection)
+        public ViewPointMassSection(PointMassSection massSection)
         {
             _massSection = massSection;
             //
