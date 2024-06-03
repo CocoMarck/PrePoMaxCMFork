@@ -228,19 +228,19 @@ Save as: Krilo 	... if a file Krilo with no extension exist it will ask for over
 
 
 Version 2.1.0
-Added a new color legend
-Added support for mesh optimization when using Gmsh mesher
+Added support for mass section: point and distributed mass
 Added thicken shell mesh feature
-Gmsh updated to version 4.13
-Added support for pyramid elelemtns
-Added support for mass secion: point and distributed mass
-Changed the structure of the .pmx files to enable creation of much larger files
-Added simple history viewer and editor
-Added a feature to delete faces of .stl geometry models
 Added a feature to split solid mesh by a selected surface
-Keyword editor wes redone to improve its performance
+Added a feature to delete faces of .stl geometry models
+Added support for mesh optimization when using Gmsh mesher
+Added support for pyramid elements
+Added a new color legend
+Changed the structure of the .pmx files to enable creation of much larger files
 Added supports for step controls
 Compression-only support can now activate a non-linear solution
+Gmsh updated to version 4.13
+Added simple history viewer and editor
+Keyword editor was redone to improve its performance
 
 DONE
 Version 2.0.0
