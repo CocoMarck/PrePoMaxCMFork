@@ -227,6 +227,21 @@ VtkMeshQuality
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
 
+Version 2.1.0
+Added a new color legend
+Added support for mesh optimization when using Gmsh mesher
+Added thicken shell mesh feature
+Gmsh updated to version 4.13
+Added support for pyramid elelemtns
+Added support for mass secion: point and distributed mass
+Changed the structure of the .pmx files to enable creation of much larger files
+Added simple history viewer and editor
+Added a feature to delete faces of .stl geometry models
+Added a feature to split solid mesh by a selected surface
+Keyword editor wes redone to improve its performance
+Added supports for step controls
+Compression-only support can now activate a non-linear solution
+
 DONE
 Version 2.0.0
 Added GmshCommon project
