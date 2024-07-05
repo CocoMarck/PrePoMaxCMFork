@@ -9,11 +9,10 @@ using CaeGlobals;
 namespace CaeResults
 {
     [Serializable]
-    public class ResultHistoryOutputFromEquation : ResultHistoryOutput
+    public class ResultFieldOutputEquation : ResultFieldOutput
     {
         // Variables                                                                                                                
         public static string EquationSeparator = ".";
-        public static string FieldName = "EQUATION";
         public static string ComponentName = "VALUE";
         private string _equation;
         private string _unit;
@@ -26,8 +25,8 @@ namespace CaeResults
 
 
         // Constructors                                                                                                             
-        public ResultHistoryOutputFromEquation(string name, string equation)
-            : base(name, "", RegionTypeEnum.None)
+        public ResultFieldOutputEquation(string name, string equation)
+            : base(name)
         {
             _equation = equation;
             _unit = "/";
@@ -43,6 +42,10 @@ namespace CaeResults
         public override string[] GetParentNames()
         {
             return _parentNames;
+        }
+        public override string[] GetComponentNames()
+        {
+            return new string[] { ComponentName };
         }
     }
 }
