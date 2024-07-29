@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace PrePoMax.Forms
 {
-    interface IFormItemSetDataParent
+    interface IFormHighlightSymbol : IFormHighlight
     {
-        bool IsSelectionGeometryBased();
-        bool IsGeometrySelectionIdBased();
+        void ClearCurrntSelectionAndHighlight();
     }
 }
