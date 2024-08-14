@@ -5,36 +5,35 @@ using System.Text;
 using System.Threading.Tasks;
 using PrePoMax;
 using CaeModel;
+using CaeGlobals;
+using CaeResults;
 
 namespace PrePoMax.Commands
 {
     [Serializable]
-    class CRemoveHistoryOutputs : PreprocessCommand
+    class CAddResultHistoryOutput : PostprocessCommand
     {
         // Variables                                                                                                                
-        private string _stepName;
-        private string[] _historyOutputNames;
+        private ResultHistoryOutput _resultHistoryOutput;
 
 
         // Constructor                                                                                                              
-        public CRemoveHistoryOutputs(string stepName, string[] historyOutputNames)
-            :base("Remove history outputs")
+        public CAddResultHistoryOutput(ResultHistoryOutput resultHistoryOutput)
+            :base("Add result history output")
         {
-            _stepName = stepName;
-            _historyOutputNames = historyOutputNames;
+            _resultHistoryOutput = resultHistoryOutput.DeepClone();
         }
 
 
         // Methods                                                                                                                  
         public override bool Execute(Controller receiver)
         {
-            receiver.RemoveHistoryOutputs(_stepName, _historyOutputNames);
+            receiver.AddResultHistoryOutput(_resultHistoryOutput.DeepClone());
             return true;
         }
         public override string GetCommandString()
         {
-
-            return base.GetCommandString() + _stepName + ": " + GetArrayAsString(_historyOutputNames);
+            return base.GetCommandString() + _resultHistoryOutput.ToString();
         }
     }
 }

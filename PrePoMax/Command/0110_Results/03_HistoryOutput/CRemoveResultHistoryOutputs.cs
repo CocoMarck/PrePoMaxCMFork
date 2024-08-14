@@ -9,32 +9,30 @@ using CaeModel;
 namespace PrePoMax.Commands
 {
     [Serializable]
-    class CRemoveHistoryOutputs : PreprocessCommand
+    class CRemoveResultHistoryOutputs : PostprocessCommand
     {
         // Variables                                                                                                                
-        private string _stepName;
-        private string[] _historyOutputNames;
+        private string[] _resultHistoryOutputNames;
 
 
         // Constructor                                                                                                              
-        public CRemoveHistoryOutputs(string stepName, string[] historyOutputNames)
-            :base("Remove history outputs")
+        public CRemoveResultHistoryOutputs(string[] resultHistoryOutputNames)
+            :base("Remove result history outputs")
         {
-            _stepName = stepName;
-            _historyOutputNames = historyOutputNames;
+            _resultHistoryOutputNames = resultHistoryOutputNames;
         }
 
 
         // Methods                                                                                                                  
         public override bool Execute(Controller receiver)
         {
-            receiver.RemoveHistoryOutputs(_stepName, _historyOutputNames);
+            receiver.RemoveResultHistoryOutputs(_resultHistoryOutputNames);
             return true;
         }
         public override string GetCommandString()
         {
 
-            return base.GetCommandString() + _stepName + ": " + GetArrayAsString(_historyOutputNames);
+            return base.GetCommandString() + GetArrayAsString(_resultHistoryOutputNames);
         }
     }
 }
