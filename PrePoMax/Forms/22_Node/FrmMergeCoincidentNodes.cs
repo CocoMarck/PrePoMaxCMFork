@@ -9,21 +9,21 @@ using CaeGlobals;
 
 namespace PrePoMax.Forms
 {
-    class FrmBoundaryLayer : UserControls.FrmProperties, IFormBase, IFormItemSetDataParent, IFormHighlight
+    class FrmMergeCoincidentNodes : UserControls.FrmProperties, IFormBase, IFormItemSetDataParent, IFormHighlight
     {
         // Variables                                                                                                                
-        private ViewBoundaryLayer _viewBoundaryLayer;
+        private ViewMergeCoincidentNodes _viewMergeCoincidentNodes;
         private Button btnPreview;
         private Controller _controller;
 
 
         // Constructors                                                                                                             
-        public FrmBoundaryLayer(Controller controller) 
+        public FrmMergeCoincidentNodes(Controller controller) 
         {
             InitializeComponent();
             //
             _controller = controller;
-            _viewBoundaryLayer = null;
+            _viewMergeCoincidentNodes = null;
             //
             SelectionClear = _controller.Selection.Clear;
         }
@@ -49,8 +49,8 @@ namespace PrePoMax.Forms
             this.ClientSize = new System.Drawing.Size(334, 411);
             this.Controls.Add(this.btnPreview);
             this.MinimumSize = new System.Drawing.Size(350, 350);
-            this.Name = "FrmBoundaryLayer";
-            this.Text = "Create Boundary Layer";
+            this.Name = "FrmMergeCoincidentNodes";
+            this.Text = "Merge Coincident Nodes";
             this.Controls.SetChildIndex(this.gbProperties, 0);
             this.Controls.SetChildIndex(this.btnCancel, 0);
             this.Controls.SetChildIndex(this.btnOK, 0);
@@ -67,12 +67,12 @@ namespace PrePoMax.Forms
         {
             try
             {
-                _viewBoundaryLayer = (ViewBoundaryLayer)propertyGrid.SelectedObject;
+                _viewMergeCoincidentNodes = (ViewMergeCoincidentNodes)propertyGrid.SelectedObject;
                 //
-                if (_viewBoundaryLayer.GeometryIds != null && _viewBoundaryLayer.GeometryIds.Length > 0)
+                if (_viewMergeCoincidentNodes.GeometryIds != null && _viewMergeCoincidentNodes.GeometryIds.Length > 0)
                 {
-                    HighlightSurface();
-                    _controller.PreviewBoundaryLayer(_viewBoundaryLayer.GeometryIds, _viewBoundaryLayer.Thickness);
+                    HighlightMergeCoincidentNodes();
+                    _controller.PreviewMergeCoincidentNodes(_viewMergeCoincidentNodes.GetBase());
                 }
             }
             catch (Exception ex)
@@ -84,12 +84,12 @@ namespace PrePoMax.Forms
         // Overrides                                                                                                                
         protected override void OnApply(bool onOkAddNew)
         {
-            _viewBoundaryLayer = (ViewBoundaryLayer)propertyGrid.SelectedObject;
+            _viewMergeCoincidentNodes = (ViewMergeCoincidentNodes)propertyGrid.SelectedObject;
             //
-            if (_viewBoundaryLayer.GeometryIds == null || _viewBoundaryLayer.GeometryIds.Length == 0)
-                throw new CaeException("The boundary layer selection must contain at least one item.");
+            if (_viewMergeCoincidentNodes.GeometryIds == null || _viewMergeCoincidentNodes.GeometryIds.Length == 0)
+                throw new CaeException("The coincident nodes selection to merge must contain at least one item.");
             // Create
-            _controller.CreateBoundaryLayerCommand(_viewBoundaryLayer.GeometryIds, _viewBoundaryLayer.Thickness);
+            _controller.MergeCoincidentNodesCommand(_viewMergeCoincidentNodes.GetBase());
             //
             _controller.ClearSelectionHistoryAndCallSelectionChanged();
             // If all is successful close the ItemSetSelectionForm - except for OKAddNew
@@ -104,17 +104,14 @@ namespace PrePoMax.Forms
         }
         protected override bool OnPrepareForm(string stepName, string meshRefinementToEditName)
         {
-            if (_controller.Model.Properties.ModelSpace != CaeModel.ModelSpaceEnum.ThreeD)
-                throw new CaeException("Boundary layer creation is possible only for 3D solid meshes.");
-            //
             _propertyItemChanged = false;
-            _viewBoundaryLayer = null;
+            _viewMergeCoincidentNodes = null;
             propertyGrid.SelectedObject = null;
             //
-            _viewBoundaryLayer = new ViewBoundaryLayer();
+            _viewMergeCoincidentNodes = new ViewMergeCoincidentNodes();
             _controller.Selection.Clear();
             //
-            propertyGrid.SelectedObject = _viewBoundaryLayer;
+            propertyGrid.SelectedObject = _viewMergeCoincidentNodes;
             propertyGrid.Select();
             //
             SetSelectItem();
@@ -126,7 +123,7 @@ namespace PrePoMax.Forms
 
 
         // Methods                                                                                                                         
-        private void HighlightSurface()
+        private void HighlightMergeCoincidentNodes()
         {
             try
             {
@@ -135,9 +132,9 @@ namespace PrePoMax.Forms
                     _controller.ClearSelectionHistory();
                     SetSelectItem();
                     // Surface.CreationData is set to null when the CreatedFrom is changed
-                    if (_viewBoundaryLayer.CreationData != null)
+                    if (_viewMergeCoincidentNodes.CreationData != null)
                     {
-                        _controller.Selection = _viewBoundaryLayer.CreationData.DeepClone(); // Deep copy to not clear
+                        _controller.Selection = _viewMergeCoincidentNodes.CreationData.DeepClone(); // Deep copy to not clear
                         _controller.HighlightSelection();
                     }
                 }
@@ -150,14 +147,14 @@ namespace PrePoMax.Forms
         }
         private void SetSelectItem()
         {
-            _controller.SetSelectItemToGeometry();
+            _controller.SetSelectItemToNode();
         }
         public void SelectionChanged(int[] ids)
         {
-            if (_viewBoundaryLayer != null)
+            if (_viewMergeCoincidentNodes != null)
             {
-                _viewBoundaryLayer.GeometryIds = ids;
-                _viewBoundaryLayer.CreationData = _controller.Selection.DeepClone();
+                _viewMergeCoincidentNodes.GeometryIds = ids;
+                _viewMergeCoincidentNodes.CreationData = _controller.Selection.DeepClone();
                 //
                 propertyGrid.Refresh();
                 //
@@ -168,7 +165,7 @@ namespace PrePoMax.Forms
         // IFormHighlight
         public void Highlight()
         {
-            if (!_closing) HighlightSurface();
+            if (!_closing) HighlightMergeCoincidentNodes();
         }
 
         // IFormItemSetDataParent
