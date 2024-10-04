@@ -14,31 +14,28 @@ using DynamicTypeDescriptor;
 
 namespace PrePoMax.Forms
 {
-    public partial class FrmGetValue : Form
+    public partial class FrmGetColor : Form
     {
         // Variables                                                                                                                
-        private ViewDoubleValue _viewValue;
+        private ViewColor _viewColor;
         private double _labelRatio = 2.0; // larger value means wider second column
         
 
 
         // Properties                                                                                                               
-        public double Value 
+        public Color Color 
         {
-            get { return _viewValue.Value; }
-            set { _viewValue.Value = value; } 
+            get { return _viewColor.Color; }
+            set { _viewColor.Color = value; } 
         }
-        public byte NumOfDigits { get { return _viewValue.NumOfDigits; } set { _viewValue.NumOfDigits = value; } }
-        public double MaxValue { get { return _viewValue.MaxValue; } set { _viewValue.MaxValue = value; } }
-        public double MinValue { get { return _viewValue.MinValue; } set { _viewValue.MinValue = value; } }
 
 
         // Constructors                                                                                                             
-        public FrmGetValue()
+        public FrmGetColor()
         {
             InitializeComponent();
             //
-            _viewValue = new ViewDoubleValue();
+            _viewColor = new ViewColor(Color.Beige);
             //
             propertyGrid.SetLabelColumnWidth(_labelRatio);
         }
@@ -65,24 +62,14 @@ namespace PrePoMax.Forms
      
 
         // Methods                                                                                                                  
-        public void PrepareForm(string title, string valueName, string valueDescription,
-                                double value, OrderedDictionary<string, double> presetValues,
-                                TypeConverter typeConverter = null)
+        public void PrepareForm(string title, Color color)
         {
             Text = title;
             //
-            _viewValue.Value = value;
-            _viewValue.PresetValues = presetValues;
+            _viewColor.Color = color;
             //
-            _viewValue.SetDisplayName(valueName);
-            _viewValue.SetDescription(valueDescription);
-            if (typeConverter != null) _viewValue.SetTypeConverter(typeConverter);
-            else _viewValue.SetTypeConverter(new StringDoubleConverter());
-            //
-            propertyGrid.SelectedObject = _viewValue;
+            propertyGrid.SelectedObject = _viewColor;
             propertyGrid.Select();
         }
-
-       
     }
 }
