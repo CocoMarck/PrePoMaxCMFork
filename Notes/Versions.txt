@@ -227,7 +227,6 @@ VtkMeshQuality
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
 Version 2.2.0
-
 Added support a tool to check the element quality was added: Model → Element → Element Quality
 Added support for merging coincident nodes
 Coordinate systems are now highlighted when selected during the creation of BCs and loads
