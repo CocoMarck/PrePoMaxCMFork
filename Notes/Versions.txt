@@ -226,6 +226,31 @@ Select similar in size?
 VtkMeshQuality
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
+Version 2.2.0
+
+Added support a tool to check the element quality was added: Model → Element → Element Quality
+Added support for merging coincident nodes
+Coordinate systems are now highlighted when selected during the creation of BCs and loads
+History (for regeneration) was updated to include commands for analysis and commands for postprocessing; regeneration can now be done for the model commands only (the commands for analysis and commands for postprocessing are not regenerated) or for all commands
+Support for command line parameters was improved
+Additional .exe file called PrePoMaxCmd.exe was added, which starts PrePoMax as a command line application
+Added support for buckling reader of the .dat files
+Added support for exporting history outputs (Result → History Output → Export)
+Added support for selection by geometry IDs
+Added support for reference point creation based on geometry selection
+Added support for coordinate system creation based on geometry selection
+Added support for the creation of the field output defined by the equation (Result → Field Output → Create)
+Added support for the creation of the history output defined by the equation (Result → History Output → Create)
+Added support for filters for the user-created history outputs; possible filters are min, max, sum, and average
+Added support for the creation of coordinate systems in the FE model view (rectangular, cylindrical)
+Added support for the creation of coordinate systems in the results view (rectangular, cylindrical)
+Added support for the creation of reference points in the results view
+Added support for using coordinate systems at the creation of boundary conditions
+Added support for using coordinate systems at the creation of concentrated loads
+Added support for using coordinate systems at the creation of surface traction loads
+Added support for transforming the field output to another coordinate system (Result → Field Output → Create)
+bug fixes
+
 
 Version 2.1.0
 Added support for mass section: point and distributed mass
