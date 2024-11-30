@@ -224,10 +224,26 @@ Axysymetric line?
 Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
-Version 2.2 dev
+Version 2.2.4 dev
+Added support for amplitudes by radiation emissivity and film coefficient
+Added support for execution times of history commands
+Added support for splitting periodic CAD surfaces during CAD file import
+Added regions field in all mesh setup items
+Added support for parameters to all initial conditions
+Added support for displaying symbols for initial conditions
+Added support for imported ST load
+Added support for initial angular velocity
+Added support for highlighting items in trees and list-views on mouse move
+
+Version 2.2.3 dev
 Added support for sweep meshing
-Added support for defeaturing
-Bug fixes
+
+Version 2.2.2 dev
+The bug preventing the use of the concentrated force on a reference point was fixed
+
+Version 2.2.1 dev
+Added support for defeaturing CAD parts: Geometry → CAD Part → Defeature
+A much faster exporter for hydrostatic pressure loads into .inp file
 
 Version 2.2.0
 Added support a tool to check the element quality was added: Model → Element → Element Quality
