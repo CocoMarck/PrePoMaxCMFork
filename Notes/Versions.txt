@@ -224,6 +224,19 @@ Axysymetric line?
 Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
+Version 2.2.7 dev
+Added selection buffer for faster highlighting of model tree items
+Added symbols for defind fields
+Changed the behaviour of the analysis status icon
+Added regenerate history form
+Significant speed up of some selection methods
+
+Version 2.2.6 dev
+Added the number of edges and faces to the query surface tool
+
+Version 2.2.5 dev
+Mouse over bug fixes
+
 Version 2.2.4 dev
 Added support for amplitudes by radiation emissivity and film coefficient
 Added support for execution times of history commands
