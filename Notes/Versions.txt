@@ -226,8 +226,8 @@ Save as: Krilo 	... if a file Krilo with no extension exist it will ask for over
 
 Version 2.2.7 dev
 Added selection buffer for faster highlighting of model tree items
-Added symbols for defind fields
-Changed the behaviour of the analysis status icon
+Added symbols for defined fields
+Changed the behavior of the analysis status icon
 Added regenerate history form
 Significant speed up of some selection methods
 
