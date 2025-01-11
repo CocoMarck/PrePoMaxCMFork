@@ -224,6 +224,16 @@ Axysymetric line?
 Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
+
+Version 2.2.9 dev
+Added support for Run history file
+Added support for Open/Save command history 
+Added support for Drag/Drop history commands
+Selection of hexa elements bug fix
+
+Version 2.2.8 dev
+Selection buffer key bug fix
+
 Version 2.2.7 dev
 Added selection buffer for faster highlighting of model tree items
 Added symbols for defined fields
