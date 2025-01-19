@@ -13,36 +13,29 @@ using PrePoMax.Forms;
 namespace PrePoMax.Commands
 {
     [Serializable]
-    class COpenResults : PostprocessCommand, IFileCommand, ICommandAsynchronous
+    class CSetCurrentResults : PostprocessCommand
     {
         // Variables                                                                                                                
-        private string _jobName;
+        private string _resultsName;
 
 
         // Constructor                                                                                                              
-        public COpenResults(string jobName)
-            : base("Open results")
+        public CSetCurrentResults(string resultsName)
+            : base("Set current results")
         {
-            _jobName = jobName;
+            _resultsName = resultsName;
         }
 
 
         // Methods                                                                                                                  
         public override bool Execute(Controller receiver)
         {
-            receiver.OpenResults(_jobName);
+            receiver.SetCurrentResults(_resultsName);
             return true;
         }
-
-        public bool ExecuteSynchronous(Controller receiver)
-        {
-            receiver.OpenResults(_jobName, false);
-            return true;
-        }
-
         public override string GetCommandString()
         {
-            return base.GetCommandString() + _jobName;
+            return base.GetCommandString() + _resultsName;
         }
     }
 }

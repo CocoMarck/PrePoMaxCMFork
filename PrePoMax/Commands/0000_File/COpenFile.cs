@@ -12,41 +12,39 @@ using CaeGlobals;
 namespace PrePoMax.Commands
 {
     [Serializable]
-    class CImportFile : PreprocessCommand, IFileCommand, ICommandWithDialog
+    class COpenFile : PreprocessCommand, IFileCommand, ICommandWithDialog
     {
         // Variables                                                                                                                
         private string _fileName;
-        private bool _onlyMaterials;
+        private string _parameters;
 
 
         // Properties                                                                                                               
         public string FileName { get { return _fileName; } set { _fileName = value; } }
-        public bool OnlyMaterials { get { return _onlyMaterials; } }
 
 
         // Constructor                                                                                                              
-        public CImportFile(string fileName, bool onlyMaterials)
-            :base("Import file")
+        public COpenFile(string fileName, string parameters)
+            :base("Open file")
         {
             _fileName = Tools.GetLocalPath(fileName);
-            _onlyMaterials = onlyMaterials;
+            _parameters = parameters;
         }
 
 
         // Methods                                                                                                                  
         public override bool Execute(Controller receiver)
         {
-            receiver.ImportFile(Tools.GetGlobalPath(_fileName), _onlyMaterials);
+            receiver.Open(Tools.GetGlobalPath(_fileName), _parameters);
             return true;
         }
         // ICommandWithDialog
         public bool ExecuteWithDialog(Controller receiver)
         {
-            string fileName = receiver.GetFileNameToImport(_onlyMaterials);
+            string fileName = receiver.GetFileNameToOpen();
             if (fileName != null) _fileName = Tools.GetLocalPath(fileName);
             return Execute(receiver);
         }
-
         public override string GetCommandString()
         {
             return base.GetCommandString() + _fileName;
