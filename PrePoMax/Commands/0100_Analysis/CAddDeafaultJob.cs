@@ -7,40 +7,35 @@ using PrePoMax;
 using CaeModel;
 using CaeMesh;
 using CaeGlobals;
-using System.Runtime.Serialization;
-
+using CaeJob;
+using PrePoMax.Forms;
 
 namespace PrePoMax.Commands
 {
     [Serializable]
-    class CAddStep : PreprocessCommand
+    class CAddDeafaultJob : PreprocessCommand
     {
         // Variables                                                                                                                
-        private Step _step;
-        private bool _copyBCsAndLoads;
-        private bool _skipsAnalysisCreation;
-
+        private string _defaultName;
 
         // Constructor                                                                                                              
-        public CAddStep(Step step, bool copyBCsAndLoads)
-            : base("Add step")
+        public CAddDeafaultJob()
+            : base("Add default analysis")
         {
-            _step = step.DeepClone();
-            _copyBCsAndLoads = copyBCsAndLoads;
-            _skipsAnalysisCreation = true;  // when old file version < 2.2.9 is opened this is false
         }
 
 
         // Methods                                                                                                                  
         public override bool Execute(Controller receiver)
         {
-            receiver.AddStep(_step.DeepClone(), _copyBCsAndLoads, _skipsAnalysisCreation);
+            _defaultName = receiver.AddDefaultJob();
             return true;
         }
 
         public override string GetCommandString()
         {
-            return base.GetCommandString() + _step.ToString();
+            string data = _defaultName != null ? _defaultName : "";
+            return base.GetCommandString() + data;
         }
     }
 }
