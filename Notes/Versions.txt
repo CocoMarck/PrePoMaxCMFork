@@ -225,6 +225,12 @@ Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
 
+Version 2.2.10 dev
+Added support to run postprocessing commands
+Added support to reorganize history commands
+Updated the mortar contact models
+Added colors to history commands view with two coloring options
+
 Version 2.2.9 dev
 Added support for Run history file
 Added support for Open/Save command history 
