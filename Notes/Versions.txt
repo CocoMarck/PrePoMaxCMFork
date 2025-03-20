@@ -225,6 +225,14 @@ Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
 
+
+
+Version 2.3.0
+Added support for zooming while doing rubber band selection
+Added support for entering multiple IDs during mesh bsed selection
+Added support to specify gap in compression only constraint
+Bug fixes
+
 Version 2.2.11 dev
 Improved the reading speed of the .frd files.
 Added CalculiX output to the output during command line regeneration.
