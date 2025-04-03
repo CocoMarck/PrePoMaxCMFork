@@ -226,6 +226,7 @@ Save as: Krilo 	... if a file Krilo with no extension exist it will ask for over
 
 
 Version 2.3.1
+Added support for command line parameter -u in combinatoin with .frd files
 Hydrostatic pressure now uses *Dload
 Cylindrical coordinate system enabled in 2D
 Export functions added to command history
