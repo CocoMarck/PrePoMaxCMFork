@@ -225,7 +225,11 @@ Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
 
-
+Version 2.3.1
+Hydrostatic pressure now uses *Dload
+Cylindrical coordinate system enabled in 2D
+Export functions added to command history
+Bug fixes
 
 Version 2.3.0
 Added support for zooming while doing rubber band selection
