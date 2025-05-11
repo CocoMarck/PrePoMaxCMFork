@@ -225,6 +225,15 @@ Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
 
+Version 2.3.2
+Added evaluation of part volume. In the geometry module, the volume of CAD parts is obtained from the geometry kernel; in the FE model module, the volume is obtained by finite element integration
+Added support for computation of area by finite element integration
+Added Export/Import functionality for parameters
+Added a command line switch --parametersExport
+Added support for autocomplete in all equation fields - history output and field output equations do not require rectangular brackets anymore. The autocomplete menu shows up after at least one character is entered, or by using the Ctrl+space key combination
+Part volumes added to the autocomplete menu
+Bug fixes
+
 Version 2.3.1
 Added support for command line parameter -u in combination with .frd files
 Hydrostatic pressure now uses *Dload
