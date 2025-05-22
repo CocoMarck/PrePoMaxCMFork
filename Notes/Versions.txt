@@ -225,6 +225,18 @@ Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
 
+Vesrion 2.3.4
+Added support for complex frequency step
+Added support for reading complex frequency step .dat file
+Improved support for reading .igs and .brep files containing separate faces
+Bug fixes
+
+Version 2.3.3
+Added support to convert closed shell CAD parts to solids
+Added support to convert solid CAD parts to shells
+Added support to import mixed (shell/solid) .step models (previously, all parts imported from a mixed model were recognized as shells)
+Bug fixes
+
 Version 2.3.2
 Added evaluation of part volume. In the geometry module, the volume of CAD parts is obtained from the geometry kernel; in the FE model module, the volume is obtained by finite element integration
 Added support for computation of area by finite element integration
