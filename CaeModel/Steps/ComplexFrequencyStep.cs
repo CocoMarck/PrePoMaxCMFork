@@ -9,13 +9,10 @@ using System.Runtime.Serialization;
 namespace CaeModel
 {
     [Serializable]
-    public class FrequencyStep : Step, ISerializable
+    public class ComplexFrequencyStep : Step, ISerializable
     {
         // Variables                                                                                                                
         private int _numOfFrequencies;          //ISerializable
-        private double _lowerFrequency;         //ISerializable
-        private double _upperFrequency;         //ISerializable
-        private bool _storage;                  //ISerializable
 
 
         // Properties                                                                                                               
@@ -28,51 +25,19 @@ namespace CaeModel
                 _numOfFrequencies = value;
             }
         }
-        public double LowerFrequency
-        {
-            get { return _lowerFrequency; }
-            set
-            {
-                if (!double.IsNaN(value))
-                {
-                    if (value < 0) throw new Exception("The lower frequency value must be larger or equal to 0.");
-                    if (!double.IsNaN(_upperFrequency) && value >= _upperFrequency)
-                        throw new Exception("The lower frequency value must be smaller than the upper frequency value.");
-                }
-                _lowerFrequency = value;
-            }
-        }
-        public double UpperFrequency
-        {
-            get { return _upperFrequency; }
-            set
-            {
-                if (!double.IsNaN(value))
-                {
-                    if (value < 0) throw new Exception("The upper frequency value must be larger or equal to 0.");
-                    if (!double.IsNaN(_lowerFrequency) && value <= _lowerFrequency)
-                        throw new Exception("The upper frequency value must be larger than the lower frequency value.");
-                }
-                _upperFrequency = value;
-            }
-        }
-        public bool Storage { get { return _storage; } set { _storage = value; } }
 
 
         // Constructors                                                                                                             
-        public FrequencyStep(string name)
+        public ComplexFrequencyStep(string name)
             :base(name)
         {
             _numOfFrequencies = 10;
-            _lowerFrequency = double.NaN;
-            _upperFrequency = double.NaN;
-            _storage = false;
             //
-            AddFieldOutput(new NodalFieldOutput("NF-Output-1", NodalFieldVariable.U));
+            AddFieldOutput(new NodalFieldOutput("NF-Output-1", NodalFieldVariable.U | NodalFieldVariable.PU));
             AddFieldOutput(new ElementFieldOutput("EF-Output-1", ElementFieldVariable.E | ElementFieldVariable.S));
         }
         //ISerializable
-        public FrequencyStep(SerializationInfo info, StreamingContext context)
+        public ComplexFrequencyStep(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             foreach (SerializationEntry entry in info)
@@ -81,12 +46,6 @@ namespace CaeModel
                 {
                     case "_numOfFrequencies":
                         _numOfFrequencies = (int)entry.Value; break;
-                    case "_lowerFrequency":
-                        _lowerFrequency = (double)entry.Value; break;
-                    case "_upperFrequency":
-                        _upperFrequency = (double)entry.Value; break;
-                    case "_storage":
-                        _storage = (bool)entry.Value; break;
                 }
             }
         }
@@ -138,9 +97,6 @@ namespace CaeModel
             base.GetObjectData(info, context);
             //
             info.AddValue("_numOfFrequencies", _numOfFrequencies, typeof(int));
-            info.AddValue("_lowerFrequency", _lowerFrequency, typeof(double));
-            info.AddValue("_upperFrequency", _upperFrequency, typeof(double));
-            info.AddValue("_storage", _storage, typeof(bool));
         }
     }
 }
