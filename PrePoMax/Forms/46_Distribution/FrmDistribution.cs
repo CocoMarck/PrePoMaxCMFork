@@ -11,37 +11,37 @@ using System.ComponentModel;
 
 namespace PrePoMax.Forms
 {
-    class FrmAmplitude : UserControls.FrmPropertyDataListView, IFormBase
+    class FrmDistribution : UserControls.FrmPropertyDataListView, IFormBase
     {
         // Variables                                                                                                                
-        private string[] _amplitudeNames;
-        private string _amplitudeToEditName;
-        private ViewAmplitude _viewAmplitude;
+        private string[] _distributionNames;
+        private string _distributionToEditName;
+        private ViewDistribution _viewDistribution;
         private Controller _controller;
         private TabPage[] _pages;
 
 
         // Properties                                                                                                               
-        public Amplitude Amplitude
+        public Distribution Distribution
         {
-            get { return _viewAmplitude.GetBase(); }
+            get { return _viewDistribution.GetBase(); }
             set
             {
                 var clone = value.DeepClone();
-                if (clone == null) _viewAmplitude = null;
-                else if (clone is AmplitudeTabular at) _viewAmplitude = new ViewAmplitudeTabular(at);
+                if (clone == null) _viewDistribution = null;
+                else if (clone is DistributionFromEquation dfe) _viewDistribution = new ViewDistributionFromEquation(dfe);
                 else throw new NotImplementedException();
             }
         }
 
 
         // Constructors                                                                                                             
-        public FrmAmplitude(Controller controller)
+        public FrmDistribution(Controller controller)
         {
             InitializeComponent();
             //
             _controller = controller;
-            _viewAmplitude = null;
+            _viewDistribution = null;
             //
             int i = 0;
             _pages = new TabPage[tcProperties.TabPages.Count];
@@ -73,9 +73,9 @@ namespace PrePoMax.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.ClientSize = new System.Drawing.Size(334, 461);
-            this.Name = "FrmAmplitude";
-            this.Text = "Edit Amplitude";
-            this.VisibleChanged += new System.EventHandler(this.FrmAmplitude_VisibleChanged);
+            this.Name = "FrmDistribution";
+            this.Text = "Edit Distribution";
+            this.VisibleChanged += new System.EventHandler(this.FrmDistribution_VisibleChanged);
             this.tcProperties.ResumeLayout(false);
             this.tpProperties.ResumeLayout(false);
             this.gbType.ResumeLayout(false);
@@ -85,7 +85,7 @@ namespace PrePoMax.Forms
 
 
         // Event handlers                                                                                                           
-        private void FrmAmplitude_VisibleChanged(object sender, EventArgs e)
+        private void FrmDistribution_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible) { }
             else dgvData.HidePlot();
@@ -117,80 +117,99 @@ namespace PrePoMax.Forms
                 dgvData.Columns.Clear();
                 tcProperties.TabPages.Clear();
                 //
+                HashSet<string> additionalParameterNames = new HashSet<string>();
                 object itemTag = lvTypes.SelectedItems[0].Tag;
-                if (itemTag is ViewAmplitudeTabular vat)
+                if (itemTag is ViewDistributionFromEquation vdfe)
                 {
                     tcProperties.TabPages.Add(_pages[0]);   // properties
-                    tcProperties.TabPages.Add(_pages[1]);   // data points
                     //
-                    SetDataGridViewBinding(vat.DataPoints);
+                    _viewDistribution = vdfe;
                     //
-                    _viewAmplitude = vat;
+                    additionalParameterNames.Add("x");
+                    additionalParameterNames.Add("y");
+                    additionalParameterNames.Add("z");
                 }
+                //if (itemTag is ViewAmplitudeTabular vat)
+                //{
+                //    tcProperties.TabPages.Add(_pages[0]);   // properties
+                //    tcProperties.TabPages.Add(_pages[1]);   // data points
+                //    //
+                //    SetDataGridViewBinding(vat.DataPoints);
+                //    //
+                //    _viewAmplitude = vat;
+                //}
                 else throw new NotImplementedException();
                 //
                 propertyGrid.SelectedObject = lvTypes.SelectedItems[0].Tag;
                 //
                 SetAllGridViewUnits();
                 //
-                propertyGrid.BuildAutocompleteMenu(_controller.GetAllParameterNames());
-                dgvData.BuildAutocompleteMenu(_controller.GetAllParameterNames());
+                HashSet<string> parameterNames = new HashSet<string>(_controller.GetAllParameterNames());
+                parameterNames.UnionWith(additionalParameterNames);
+                propertyGrid.BuildAutocompleteMenu(parameterNames);
+                dgvData.BuildAutocompleteMenu(parameterNames);
             }
         }
         protected override void OnApply(bool onOkAddNew)
         {
             if (propertyGrid.SelectedObject == null) throw new CaeException("No item selected.");
             //
-            _viewAmplitude = (ViewAmplitude)propertyGrid.SelectedObject;
+            _viewDistribution = (ViewDistribution)propertyGrid.SelectedObject;
             // Check if the name exists
-            CheckName(_amplitudeToEditName, _viewAmplitude.Name, _amplitudeNames, "amplitude");
-            // Create
-            if (_amplitudeToEditName == null)
+            CheckName(_distributionToEditName, _viewDistribution.Name, _distributionNames, "distribution");
+            // Check the equations
+            if (Distribution is DistributionFromEquation dfe)
             {
-                _controller.AddAmplitudeCommand(Amplitude);
+                string error = dfe.CheckEquations();
+                if (error != null) throw new CaeException(error);
+            }
+            // Create
+            if (_distributionToEditName == null)
+            {
+                _controller.AddDistributionCommand(Distribution);
             }
             // Replace
             else if (_propertyItemChanged)
             {
-                _controller.ReplaceAmplitudeCommand(_amplitudeToEditName, Amplitude);
+                _controller.ReplaceDistributionCommand(_distributionToEditName, Distribution);
             }
         }
-        protected override bool OnPrepareForm(string stepName, string amplitudeToEditName)
+        protected override bool OnPrepareForm(string stepName, string distributionToEditName)
         {
-            this.btnOkAddNew.Visible = amplitudeToEditName == null;
+            this.btnOkAddNew.Visible = distributionToEditName == null;
             //
             _propertyItemChanged = false;
             _stepName = null;
-            _amplitudeNames = null;
-            _amplitudeToEditName = null;
-            _viewAmplitude = null;
+            _distributionNames = null;
+            _distributionToEditName = null;
+            _viewDistribution = null;
             lvTypes.Items.Clear();
             propertyGrid.SelectedObject = null;
             //
             _stepName = stepName;
-            _amplitudeNames = _controller.GetAmplitudeNames();
-            _amplitudeToEditName = amplitudeToEditName;
+            _distributionNames = _controller.GetDistributionNames();
+            _distributionToEditName = distributionToEditName;
             //
-            if (_amplitudeNames == null)
-                throw new CaeException("The amplitude names must be defined first.");
+            if (_distributionNames == null)
+                throw new CaeException("The distribution names must be defined first.");
             //
-            PopulateListOfAmplitudes();
+            PopulateListOfDistributions();
             //
-            if (amplitudeToEditName == null)
+            if (distributionToEditName == null)
             {
                 lvTypes.Enabled = true;
-                _viewAmplitude = null;
+                _viewDistribution = null;
                 if (lvTypes.Items.Count == 1) _preselectIndex = 0;
             }
             else
             {
-                Amplitude = _controller.GetAmplitude(amplitudeToEditName); // to clone
+                Distribution = _controller.GetDistribution(distributionToEditName); // to clone
                 //
                 int selectedId;
-                if (_viewAmplitude.GetBase() is AmplitudeTabular) selectedId = 0;
+                if (_viewDistribution.GetBase() is DistributionFromEquation) selectedId = 0;
                 else throw new NotSupportedException();
                 //
-                lvTypes.Items[selectedId].Tag = _viewAmplitude;
+                lvTypes.Items[selectedId].Tag = _viewDistribution;
                 _preselectIndex = selectedId;
             }
             //
@@ -201,22 +220,22 @@ namespace PrePoMax.Forms
         
 
         // Methods                                                                                                                  
-        private void PopulateListOfAmplitudes()
+        private void PopulateListOfDistributions()
         {
             // Populate list view
             ListViewItem item;
-            // Tabular
-            item = new ListViewItem("Tabular");
-            ViewAmplitudeTabular vat = new ViewAmplitudeTabular(new AmplitudeTabular(GetAmplitudeName("Tabular"),
-                                                                                     new double[][] { new double[2] }));
-            item.Tag = vat;
+            // Equation
+            item = new ListViewItem("From Equation");
+            ViewDistributionFromEquation vdfe = 
+                new ViewDistributionFromEquation(new DistributionFromEquation(GetDistributionName("From Equation"), "=1"));
+            item.Tag = vdfe;
             lvTypes.Items.Add(item);
         }
-        private string GetAmplitudeName(string name)
+        private string GetDistributionName(string name)
         {
-            if (name == null || name == "") name = "Amplitude";
+            if (name == null || name == "") name = "Distribution";
             name = name.Replace(' ', '_');
-            name = _amplitudeNames.GetNextNumberedKey(name);
+            name = _distributionNames.GetNextNumberedKey(name);
             //
             return name;
         }
@@ -224,7 +243,7 @@ namespace PrePoMax.Forms
         {
             BindingSource binding = new BindingSource();
             binding.DataSource = data;
-            dgvData.DataSource = binding; // bind datagridview to binding source - enables adding of new lines
+            dgvData.DataSource = binding; // bind datagridView to binding source - enables adding of new lines
             binding.ListChanged += Binding_ListChanged;
         }
         private void SetAllGridViewUnits()
@@ -259,7 +278,5 @@ namespace PrePoMax.Forms
                 col.Tag = converter;
             }
         }
-
-
     }
 }
