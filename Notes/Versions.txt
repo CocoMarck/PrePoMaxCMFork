@@ -224,6 +224,15 @@ Axysymetric line?
 Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
+Vesrion 2.3.5
+Added support for distribution from equation
+Added support for distribution from file
+Added support for distributed initial temperature
+Added support for distributed temperature boundary condition
+Added support to preview temperature boundary condition
+Added support for distributed pressure
+Added support for distributed surface traction
+Added support for distributed defined temperature field
 
 Vesrion 2.3.4
 Added support for complex frequency step
