@@ -5,59 +5,39 @@ using System.Text;
 using System.Threading.Tasks;
 using CaeModel;
 using CaeMesh;
+using CaeGlobals;
 
 namespace FileInOut.Output.Calculix
 {
     [Serializable]
-    internal enum OpKeywordEnum
-    {
-        None,
-        Boundary,
-        Cload,
-        Dload,
-        Cflux,
-        Dflux,
-        Film,
-        Radiate,
-        Temperature
-    }
-    //
-    [Serializable]
-    internal enum OpTypeEnum
-    {
-        None,
-        Mod,
-        New
-    }
-    //
-    [Serializable]
-    internal class CalOpParameter : CalculixKeyword
+    internal class CalLoad : CalculixKeyword
     {
         // Variables                                                                                                                
-        private OpKeywordEnum _opKeyword;
         private OpTypeEnum _opType;
 
 
         // Properties                                                                                                               
+        public OpTypeEnum OpType { get { return _opType; } set { _opType = value; } }
 
 
         // Constructor                                                                                                              
-        public CalOpParameter(OpKeywordEnum opKeyword, OpTypeEnum opType)
+        public CalLoad()
         {
-            if (opKeyword == OpKeywordEnum.None || opType == OpTypeEnum.None)
-                throw new NotSupportedException();
-            //
-            _opKeyword = opKeyword;
-            _opType = opType;
+            _opType = OpTypeEnum.None;
         }
 
 
         // Methods                                                                                                                  
+        public string OpTypeString()
+        {
+            if (_opType == OpTypeEnum.None) return "";
+            else if (_opType == OpTypeEnum.New) return ", op=New";
+            else if (_opType == OpTypeEnum.Mod) return ", op=Mod";
+            else throw new NotSupportedException();
+        }
         public override string GetKeywordString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("*{0}, op={1}{2}", _opKeyword, _opType, Environment.NewLine);
-            return sb.ToString();
+            return "";
         }
         public override string GetDataString()
         {

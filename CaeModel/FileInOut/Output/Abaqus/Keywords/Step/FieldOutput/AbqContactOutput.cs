@@ -5,48 +5,37 @@ using System.Text;
 using System.Threading.Tasks;
 using CaeModel;
 using CaeMesh;
-using CaeGlobals;
 
 namespace FileInOut.Output.Calculix
 {
     [Serializable]
-    internal class CalCFlux : CalLoad
+    internal class AbqContactOutput : CalculixKeyword
     {
         // Variables                                                                                                                
-        private CFlux _flux;
+        private ContactFieldOutput _contactFieldOutput;
 
 
         // Properties                                                                                                               
 
 
         // Constructor                                                                                                              
-        public CalCFlux(CFlux flux)
+        public AbqContactOutput(ContactFieldOutput contactFieldOutput)
         {
-            _flux = flux;
+            _contactFieldOutput = contactFieldOutput;
         }
 
 
         // Methods                                                                                                                  
         public override string GetKeywordString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("** Name: " + _flux.Name);
-            string amplitude = "";
-            if (_flux.AmplitudeName != Amplitude.DefaultAmplitudeName) amplitude = ", Amplitude=" + _flux.AmplitudeName;
-            string add = "";
-            if (_flux.AddFlux) add = ", Add";
-            //
-            sb.AppendFormat("*Cflux{0}{1}{2}{3}", amplitude, add, OpTypeString(), Environment.NewLine);
-            //
-            return sb.ToString();
+            return string.Format("*Contact output{0}", Environment.NewLine);
         }
         public override string GetDataString()
         {
-            StringBuilder sb = new StringBuilder();
-            //
-            sb.AppendFormat("{0}, 11, {1}{2}", _flux.RegionName, _flux.Magnitude.Value.ToCalculiX16String(), Environment.NewLine);
-            //
-            return sb.ToString();
+            string variables = _contactFieldOutput.Variables.ToString();
+            variables = variables.Replace("CDIS", "CDISP");
+            variables = variables.Replace("CSTR", "CSTRESS");
+            return string.Format("{0}{1}", variables, Environment.NewLine);
         }
     }
 }

@@ -15,16 +15,13 @@ using System.Windows.Forms;
 namespace PrePoMax
 {
    [Serializable]
-    public class CalculixSettings : ISettings
+    public class AbaqusSettings : ISettings
     {
         // Variables                                                                                                                
         private string _workDirectory;
         private bool _usePmxFolderAsWorkDirectory;
         private string _executable;
-        private SolverTypeEnum _solverTypeEnum;
         private int _numCPUs;
-        private List<EnvironmentVariable> _environmentVariables;
-        private ConvertPyramidsToEnum _convertPyramidsTo;
         public static string NonEnglishDirectoryWarning = "The selected work directory path contains non-English characters. " +
                                                           "Some program features might not work as expected.";
 
@@ -44,20 +41,19 @@ namespace PrePoMax
             get { return _usePmxFolderAsWorkDirectory; }
             set { _usePmxFolderAsWorkDirectory = value; }
         }
-        public string CalculixExe 
+        public string AbaqusExe 
         {
             get { return Tools.GetGlobalPath(_executable); }
             set
             {
                 string path = Tools.GetGlobalPath(value);
                 if (!File.Exists(path))
-                    throw new Exception("The selected Calculix executable does not exist.");
+                    throw new Exception("The selected Abaqus executable does not exist.");
                 if (Path.GetExtension(path) != ".exe" && Path.GetExtension(path) != ".bat" && Path.GetExtension(path) != ".cmd")
                     throw new Exception("The selected executable's file extension is not .exe, .bat or .cmd.");
                 _executable = Tools.GetLocalPath(path);
             }
         }
-        public SolverTypeEnum DefaultSolverType { get { return _solverTypeEnum; } set { _solverTypeEnum = value; } }
         public int NumCPUs
         {
             get { return _numCPUs; }
@@ -67,16 +63,10 @@ namespace PrePoMax
                 if (_numCPUs < 1) _numCPUs = 1;
             }
         }
-        public List<EnvironmentVariable> EnvironmentVariables
-        {
-            get { return _environmentVariables; }
-            set { _environmentVariables = value; }
-        }
-        public ConvertPyramidsToEnum ConvertPyramidsTo { get { return _convertPyramidsTo; } set { _convertPyramidsTo = value; } }
 
 
         // Constructors                                                                                                             
-        public CalculixSettings()
+        public AbaqusSettings()
         {
             Reset();
         }
@@ -90,11 +80,8 @@ namespace PrePoMax
         {
             _workDirectory = null;
             _usePmxFolderAsWorkDirectory = false;
-            _executable = null;
-            _solverTypeEnum = SolverTypeEnum.Pardiso;
+            _executable = "";
             _numCPUs = 1;
-            _environmentVariables = null;
-            _convertPyramidsTo = ConvertPyramidsToEnum.Wedges;
         }
     }
 }
