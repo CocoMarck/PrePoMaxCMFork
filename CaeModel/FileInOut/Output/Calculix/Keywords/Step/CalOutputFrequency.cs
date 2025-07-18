@@ -5,42 +5,44 @@ using System.Text;
 using System.Threading.Tasks;
 using CaeModel;
 using CaeMesh;
-using CaeGlobals;
 
 namespace FileInOut.Output.Calculix
 {
     [Serializable]
-    internal class CalBuckleStep : CalStep
+    internal class CalOutputFrequency : CalculixKeyword
     {
         // Variables                                                                                                                
-        private BuckleStep _step;
+        private int _outputFrequency;
 
 
         // Properties                                                                                                               
 
 
         // Constructor                                                                                                              
-        public CalBuckleStep(BuckleStep step)
+        public CalOutputFrequency(int outputFrequency)
         {
-            _step = step;
-            OutputSolver = true;
-            OutputNoAnalysis = true;
+            _outputFrequency = outputFrequency;
         }
 
 
         // Methods                                                                                                                  
         public override string GetKeywordString()
         {
-            string solver = !OutputSolver || _step.SolverType == SolverTypeEnum.Default ?
-                "" : ", Solver=" + _step.SolverType.GetDisplayedName();
-            return string.Format("*Buckle{0}{1}", solver, Environment.NewLine);
+            string frequency;
+            if (IsDefault()) frequency = ", Frequency=1";
+            else frequency = ", Frequency=" + _outputFrequency;
+            //
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("*Output{0}{1}", frequency, Environment.NewLine);
+            return sb.ToString();
         }
         public override string GetDataString()
         {
-            string data = string.Format("{0}, {1}{2}", _step.NumOfBucklingFactors, _step.Accuracy.ToCalculiX16String(),
-                                        Environment.NewLine);
-            if (OutputNoAnalysis && !_step.RunAnalysis) data += "*No Analysis" + Environment.NewLine;
-            return data;
+            return "";
+        }
+        public bool IsDefault()
+        {
+            return _outputFrequency == int.MinValue;
         }
     }
 }

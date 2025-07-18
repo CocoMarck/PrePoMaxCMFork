@@ -5,42 +5,42 @@ using System.Text;
 using System.Threading.Tasks;
 using CaeModel;
 using CaeMesh;
-using CaeGlobals;
 
 namespace FileInOut.Output.Calculix
 {
     [Serializable]
-    internal class CalBuckleStep : CalStep
+    internal class CalStepHeader : CalculixKeyword
     {
         // Variables                                                                                                                
-        private BuckleStep _step;
+        private Step _step;
 
 
         // Properties                                                                                                               
+        public object GetBase { get { return _step; } }
 
 
         // Constructor                                                                                                              
-        public CalBuckleStep(BuckleStep step)
+        public CalStepHeader(Step step)
         {
             _step = step;
-            OutputSolver = true;
-            OutputNoAnalysis = true;
         }
 
 
         // Methods                                                                                                                  
         public override string GetKeywordString()
         {
-            string solver = !OutputSolver || _step.SolverType == SolverTypeEnum.Default ?
-                "" : ", Solver=" + _step.SolverType.GetDisplayedName();
-            return string.Format("*Buckle{0}{1}", solver, Environment.NewLine);
+            string perturbation = _step.Perturbation ? ", Perturbation" : "";
+            string nlGeom = _step.Nlgeom ? ", Nlgeom" : "";
+            string inc = "";
+            if (_step.IncrementationType != IncrementationTypeEnum.Default) inc = ", Inc=" + _step.MaxIncrements;
+            //
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("*Step{0}{1}{2}", perturbation, nlGeom, inc).AppendLine();
+            return sb.ToString();
         }
         public override string GetDataString()
         {
-            string data = string.Format("{0}, {1}{2}", _step.NumOfBucklingFactors, _step.Accuracy.ToCalculiX16String(),
-                                        Environment.NewLine);
-            if (OutputNoAnalysis && !_step.RunAnalysis) data += "*No Analysis" + Environment.NewLine;
-            return data;
+            return "";
         }
     }
 }
