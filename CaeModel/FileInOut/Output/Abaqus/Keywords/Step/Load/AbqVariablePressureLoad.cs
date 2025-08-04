@@ -6,62 +6,27 @@ using System.Threading.Tasks;
 using CaeModel;
 using CaeMesh;
 using CaeGlobals;
-using System.Runtime.InteropServices;
 
 namespace FileInOut.Output.Calculix
 {
     [Serializable]
-    internal class CalImportedPressureLoad : CalLoad
+    internal class AbqVariablePressureLoad : CalVariablePressureLoad
     {
         // Variables                                                                                                                
-        protected ImportedPressure _load;
-        protected DLoad[] _dLoads;
-        protected ComplexLoadTypeEnum _complexLoadType;
-        protected FeSurfaceFaceTypes _surfaceFaceType;
 
 
         // Properties                                                                                                               
 
 
         // Constructor                                                                                                              
-        public CalImportedPressureLoad(CalImportedPressureLoad calImportedPressureLoad)
-            : this(calImportedPressureLoad._load, calImportedPressureLoad._dLoads, calImportedPressureLoad._complexLoadType,
-                   calImportedPressureLoad._surfaceFaceType)
+        public AbqVariablePressureLoad(CalVariablePressureLoad calVariablePressureLoad)
+            :base(calVariablePressureLoad)
         {
-        }
-        public CalImportedPressureLoad(ImportedPressure load, DLoad[] dLoads, ComplexLoadTypeEnum complexLoadType,
-                                       FeSurfaceFaceTypes surfaceFaceType)
-        {
-            _load = load;
-            _dLoads = dLoads;
-            _complexLoadType = complexLoadType;
-            _surfaceFaceType = surfaceFaceType;
-        }
-        public CalImportedPressureLoad(FeModel model, ImportedPressure load, ComplexLoadTypeEnum complexLoadType)
-        {
-            _load = load;
-            _load.ImportPressure(model.UnitSystem);
-            _dLoads = model.GetElementDLoadsFromVariablePressureLoad(_load);
-            _complexLoadType = complexLoadType;
-            //
-            _surfaceFaceType = model.Mesh.Surfaces[load.SurfaceName].SurfaceFaceTypes;
+            OpType = OpTypeEnum.New;
         }
 
 
         // Methods                                                                                                                  
-        public override string GetKeywordString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("** Name: " + _load.Name);
-            string amplitude = "";
-            if (_load.AmplitudeName != Amplitude.DefaultAmplitudeName) amplitude = ", Amplitude=" + _load.AmplitudeName;
-            //
-            string loadCase = GetComplexLoadCase(_complexLoadType);
-            //
-            sb.AppendFormat("*Dload{0}{1}{2}{3}", amplitude, loadCase, OpTypeString(), Environment.NewLine);
-            //
-            return sb.ToString();
-        }
         public override string GetDataString()
         {
             StringBuilder sb = new StringBuilder();
@@ -84,6 +49,11 @@ namespace FileInOut.Output.Calculix
                         else if (faceName == FeFaceName.S4) faceKey = "P2";
                         else if (faceName == FeFaceName.S5) faceKey = "P3";
                         else if (faceName == FeFaceName.S6) faceKey = "P4";
+                    }
+                    else if (_surfaceFaceType == FeSurfaceFaceTypes.ShellFaces ||
+                             _surfaceFaceType == FeSurfaceFaceTypes.ShellEdgeFaces)
+                    {
+                        faceKey = "P";
                     }
                     else
                     {

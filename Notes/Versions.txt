@@ -224,7 +224,7 @@ Axysymetric line?
 Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
-Vesrion 2.3.7
+Vesrion 2.3.8
 Bug fixes
 
 Vesrion 2.3.7

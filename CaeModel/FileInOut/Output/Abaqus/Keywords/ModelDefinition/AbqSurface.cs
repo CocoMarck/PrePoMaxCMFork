@@ -9,33 +9,22 @@ using CaeMesh;
 namespace FileInOut.Output.Calculix
 {
     [Serializable]
-    internal class CalSurface : CalculixKeyword
+    internal class AbqSurface : CalSurface
     {
         // Variables                                                                                                                
-        protected FeSurface _surface;
-        protected bool _twoD;
 
 
         // Properties                                                                                                               
 
 
         // Constructor                                                                                                              
-        public CalSurface(CalSurface calSurface)
-            :this(calSurface._surface, calSurface._twoD)
+        public AbqSurface(CalSurface calSurface)
+            :base(calSurface)
         {
-        }
-        public CalSurface(FeSurface surface, bool twoD)
-        {
-            _surface = surface;
-            _twoD = twoD;
         }
 
 
         // Methods                                                                                                                  
-        public override string GetKeywordString()
-        {
-            return string.Format("*Surface, Name={0}, Type={1}{2}", _surface.Name, _surface.Type, Environment.NewLine);
-        }
         public override string GetDataString()
         {
             StringBuilder sb = new StringBuilder();
@@ -52,6 +41,16 @@ namespace FileInOut.Output.Calculix
                         else if (elementSetEntry.Key == FeFaceName.S4) faceKey = "S2";
                         else if (elementSetEntry.Key == FeFaceName.S5) faceKey = "S3";
                         else if (elementSetEntry.Key == FeFaceName.S6) faceKey = "S4";
+                    }
+                    else if (_surface.SurfaceFaceTypes == FeSurfaceFaceTypes.ShellFaces ||
+                             _surface.SurfaceFaceTypes == FeSurfaceFaceTypes.ShellEdgeFaces)
+                    {
+                        if (elementSetEntry.Key == FeFaceName.S1) faceKey = "SPOS";
+                        else if (elementSetEntry.Key == FeFaceName.S2) faceKey = "SNEG";
+                        else if (elementSetEntry.Key == FeFaceName.S3) faceKey = "E1";
+                        else if (elementSetEntry.Key == FeFaceName.S4) faceKey = "E2";
+                        else if (elementSetEntry.Key == FeFaceName.S5) faceKey = "E3";
+                        else if (elementSetEntry.Key == FeFaceName.S6) faceKey = "E4";
                     }
                     else
                     {

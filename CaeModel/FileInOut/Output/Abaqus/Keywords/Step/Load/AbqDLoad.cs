@@ -10,51 +10,25 @@ using CaeGlobals;
 namespace FileInOut.Output.Calculix
 {
     [Serializable]
-    internal class CalDLoad : CalLoad
+    internal class AbqDLoad : CalDLoad
     {
         // Variables                                                                                                                
-        protected DLoad _load;
-        protected FeSurface _surface;
-        protected ComplexLoadTypeEnum _complexLoadType;
 
 
         // Properties                                                                                                               
 
 
         // Constructor                                                                                                              
-        public CalDLoad(CalDLoad calDLoad)
-            :this(calDLoad._load, calDLoad._surface, calDLoad._complexLoadType)
+        public AbqDLoad(CalDLoad calDLoad)
+            :base(calDLoad)
         {
-        }
-        public CalDLoad(DLoad load, FeSurface surface, ComplexLoadTypeEnum complexLoadType)
-        {
-            _load = load;
-            _surface = surface;
-            _complexLoadType = complexLoadType;
+            OpType = OpTypeEnum.New;
         }
 
 
         // Methods                                                                                                                  
-        public override string GetKeywordString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("** Name: " +_load.Name);
-            string amplitude = "";
-            if (_load.AmplitudeName != Amplitude.DefaultAmplitudeName) amplitude = ", Amplitude=" + _load.AmplitudeName;
-            //
-            string loadCase = GetComplexLoadCase(_complexLoadType);
-            //
-            sb.AppendFormat("*Dload{0}{1}{2}{3}", amplitude, loadCase, OpTypeString(), Environment.NewLine);
-            //
-            return sb.ToString();
-        }
         public override string GetDataString()
         {
-            // *Dload
-            // _obremenitev_el_surf_S3, P3, 1
-            // _obremenitev_el_surf_S4, P4, 1
-            // _obremenitev_el_surf_S1, P1, 1
-            // _obremenitev_el_surf_S2, P2, 1
             StringBuilder sb = new StringBuilder();
             FeFaceName faceName;
             string faceKey = "";
@@ -69,6 +43,11 @@ namespace FileInOut.Output.Calculix
                     else if (faceName == FeFaceName.S4) faceKey = "P2";
                     else if (faceName == FeFaceName.S5) faceKey = "P3";
                     else if (faceName == FeFaceName.S6) faceKey = "P4";
+                }
+                else if (_surface.SurfaceFaceTypes == FeSurfaceFaceTypes.ShellFaces ||
+                         _surface.SurfaceFaceTypes == FeSurfaceFaceTypes.ShellEdgeFaces)
+                {
+                    faceKey = "P";
                 }
                 else
                 {
