@@ -225,6 +225,8 @@ Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
 Vesrion 2.3.8
+Fixed export of shell surfaces and pressure loads to Abaqus .inp files
+Fixed 3D view animation
 Bug fixes
 
 Vesrion 2.3.7
