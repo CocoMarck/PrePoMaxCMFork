@@ -3,41 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CaeMesh;
 using System.ComponentModel;
+using CaeGlobals;
 using System.Runtime.Serialization;
 
 namespace CaeModel
 {
     [Serializable]
     [Flags]
-    public enum ContactFieldVariable
+    public enum SectionHistoryVariableEnum
     {
         // Must start at 1 for the UI to work
-        CDIS = 1,
-        CSTR = 2,
-        CELS = 4,
-        PCON = 8
+        SOF = 1,
+        SOM = 2,
+        SOAREA = 4,
     }
 
     [Serializable]
-    public class ContactFieldOutput : FieldOutput, ISerializable
+    public class SectionHistoryOutput : HistoryOutput, ISerializable
     {
         // Variables                                                                                                                
-        private ContactFieldVariable _variables;        //ISerializable
+        private SectionHistoryVariableEnum _variables;              //ISerializable
 
 
         // Properties                                                                                                               
-        public ContactFieldVariable Variables { get { return _variables; } set { _variables = value; } }
+        public SectionHistoryVariableEnum Variables { get { return _variables; } set { _variables = value; } }
 
 
         // Constructors                                                                                                             
-        public ContactFieldOutput(string name, ContactFieldVariable variables)
-            : base(name) 
+        public SectionHistoryOutput(string name, SectionHistoryVariableEnum variables, string regionName, RegionTypeEnum regionType)
+            : base(name, regionName, regionType)
         {
-            _variables |= variables;
+            _variables = variables;
         }
-        public ContactFieldOutput(SerializationInfo info, StreamingContext context)
+        public SectionHistoryOutput(SerializationInfo info, StreamingContext context)
            : base(info, context)
         {
             foreach (SerializationEntry entry in info)
@@ -45,8 +44,7 @@ namespace CaeModel
                 switch (entry.Name)
                 {
                     case "_variables":
-                    case "ContactFieldOutput+_variables":     // Compatibility v2.1.0
-                        _variables = (ContactFieldVariable)entry.Value; break;
+                        _variables = (SectionHistoryVariableEnum)entry.Value; break;
                 }
             }
         }
@@ -54,13 +52,14 @@ namespace CaeModel
 
         // Methods                                                                                                                  
 
+
         // ISerialization
         public new void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // Using typeof() works also for null fields
             base.GetObjectData(info, context);
             //
-            info.AddValue("_variables", _variables, typeof(ContactFieldVariable));
+            info.AddValue("_variables", _variables, typeof(SectionHistoryVariableEnum));
         }
     }
 }
