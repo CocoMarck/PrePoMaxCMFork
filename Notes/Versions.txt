@@ -224,13 +224,17 @@ Axysymetric line?
 Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
+Version 2.4.1
+Added support for hiding min/max legend values
+Added support for section output in history outputs
+Bug fixes
+
 Version 2.4.0
 Added history output from element size, equation support to wear analysis settings
 Added support for dist, distX, distY, and distZ functions in equations
 Added follower view
 Adeded support for user views
 Added support for smoother zooming: using ctrl + mouse wheel or ctrl + middle mouse button
-
 
 Version 2.3.9
 Inp reader performance issue solved for a large number of user keywords
