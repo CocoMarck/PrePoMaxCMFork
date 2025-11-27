@@ -212,9 +212,6 @@ Dependency nglib - added following files for c++ redistriburable compatibility:
 - msvcp120.dll
 - msvcr120.dll
 
-
-
-
 ToDo
 
 Collapsable group box in front of the Name?
@@ -223,6 +220,12 @@ Axysymetric line?
 2D Fixed not working for rotations?
 Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
+
+
+Version 2.4.2
+Added support for deactivating parts
+Changed the bahviour of modified items - modified items are now not marked as invalid (red)
+Bug fixes
 
 Version 2.4.1
 Added support for hiding min/max legend values
