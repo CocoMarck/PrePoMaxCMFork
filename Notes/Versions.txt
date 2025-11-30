@@ -224,6 +224,8 @@ Save as: Krilo 	... if a file Krilo with no extension exist it will ask for over
 
 Version 2.4.2
 Added support for deactivating parts
+Added support for deactivating materials
+Added support for deactivating user keywords
 Changed the bahviour of modified items - modified items are now not marked as invalid (red)
 Bug fixes
 
