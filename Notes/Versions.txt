@@ -222,9 +222,9 @@ Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
 Version 2.4.3
-Added support for 3MF output of geomery, model and results
-Added support to open odb files (requires Abaqus installation)
-Addes support to convert odb files to frd files
+Added support for 3MF output of geometry, model and results
+Added support to open .odb files (requires Abaqus installation)
+Addes support to convert .odb files to .frd files
 
 Version 2.4.2
 Added support for deactivating parts
