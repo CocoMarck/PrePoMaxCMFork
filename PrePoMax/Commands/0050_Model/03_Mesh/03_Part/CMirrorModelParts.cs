@@ -1,36 +1,38 @@
-﻿using System;
+﻿using CaeGlobals;
+using CaeMesh;
+using CaeModel;
+using PrePoMax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-using PrePoMax;
-using CaeModel;
-using CaeMesh;
-using CaeGlobals;
-using System.Runtime.Serialization;
 
 
 namespace PrePoMax.Commands
 {
     [Serializable]
-    class CTranslateModelParts : PreprocessCommand, ISerializable 
+    class CMirrorModelParts : PreprocessCommand, ISerializable
     {
         // Variables                                                                                                                
         private string[] _partNames;
-        private double[] _translateVector;
-        private int _numberOfCopies;
+        private double[] _mirrorPoint;
+        private double[] _mirrorDirection;
+        private bool _copy;
 
 
         // Constructor                                                                                                              
-        public CTranslateModelParts(string[] partNames, double[] translateVector, int numberOfCopies)
-            : base("Translate mesh parts")
+        public CMirrorModelParts(string[] partNames, double[] mirrorPoint, double[] mirrorDirection, bool copy)
+            : base("Mirror mesh parts")
         {
             _partNames = partNames;
-            _translateVector = translateVector;
-            _numberOfCopies = numberOfCopies;
+            _mirrorPoint = mirrorPoint;
+            _mirrorDirection = mirrorDirection;
+            _copy = copy;
         }
-        public CTranslateModelParts(SerializationInfo info, StreamingContext context)
-            : base("") // this can be empty
+        public CMirrorModelParts(SerializationInfo info, StreamingContext context)
+           : base("") // this can be empty
         {
             foreach (SerializationEntry entry in info)
             {
@@ -43,14 +45,14 @@ namespace PrePoMax.Commands
                     case "_partNames":
                         _partNames = (string[])entry.Value;
                         break;
-                    case "_translateVector":
-                        _translateVector = (double[])entry.Value;
+                    case "_mirrorPoint":
+                        _mirrorPoint = (double[])entry.Value;
                         break;
-                    case "_copy":   // Compatibility for version v.2.4.3
-                        _numberOfCopies = (bool)entry.Value ? 1 : -1;
+                    case "_mirrorDirection":
+                        _mirrorDirection = (double[])entry.Value;
                         break;
-                    case "_numberOfCopies":
-                        _numberOfCopies = (int)entry.Value;
+                    case "_copy":
+                        _copy = (bool)entry.Value;
                         break;
                     default:
                         throw new NotSupportedException();
@@ -62,7 +64,7 @@ namespace PrePoMax.Commands
         // Methods                                                                                                                  
         public override bool Execute(Controller receiver)
         {
-            receiver.TranslateModelParts(_partNames, _translateVector, _numberOfCopies);
+            receiver.MirrorModelParts(_partNames, _mirrorPoint, _mirrorDirection, _copy);
             return true;
         }
         public override string GetCommandString()
@@ -76,8 +78,9 @@ namespace PrePoMax.Commands
             info.AddValue("Command+_name", _name, typeof(string));
             info.AddValue("Command+_dateCreated", _dateCreated, typeof(DateTime));
             info.AddValue("_partNames", _partNames, typeof(string[]));
-            info.AddValue("_translateVector", _translateVector, typeof(double[]));
-            info.AddValue("_numberOfCopies", _numberOfCopies, typeof(int));
+            info.AddValue("_mirrorPoint", _mirrorPoint, typeof(double[]));
+            info.AddValue("_mirrorDirection", _mirrorDirection, typeof(double[]));
+            info.AddValue("_copy", _copy, typeof(bool));
         }
     }
 }
