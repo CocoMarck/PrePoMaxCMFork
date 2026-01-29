@@ -221,6 +221,16 @@ Axysymetric line?
 Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
+Version 2.4.4
+Added support for translate pattern of the mesh with preview
+Added support for rotate pattern of the mesh with preview
+Added support for mirror pattern  of the mesh with preview
+Added support for renaming items in all trees using the second mouse click or F2 key
+Added angular deflection option for triangulation of geometry
+Updated .step geometry importer to better support PTC/NX files
+Improved selection cache for faster selection
+Fixed pre-tension load symbols
+
 Version 2.4.3
 Added support for 3MF output of geometry, model and results
 Added support to open .odb files (requires Abaqus installation)
