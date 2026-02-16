@@ -221,6 +221,11 @@ Axysymetric line?
 Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
+Version 2.4.5
+Added box zoom operation
+Added support for local mesh size definition based on the number of elements
+Fixed mirror part bug
+
 Version 2.4.4
 Added support for translate pattern of the mesh with preview
 Added support for rotate pattern of the mesh with preview
