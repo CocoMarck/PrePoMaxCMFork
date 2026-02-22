@@ -222,6 +222,11 @@ Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
 Version 2.4.5
+Step symbol selection bug fix
+Pyramid element visualization bug fix
+Camera bug fix
+
+Version 2.4.5
 Added box zoom operation
 Added support for local mesh size definition based on the number of elements
 Fixed mirror part bug
