@@ -221,7 +221,7 @@ Axysymetric line?
 Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
-Version 2.4.5
+Version 2.4.6
 Step symbol selection bug fix
 Pyramid element visualization bug fix
 Camera bug fix
