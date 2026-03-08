@@ -221,6 +221,19 @@ Axysymetric line?
 Select similar in size?
 Save as: Krilo 	... if a file Krilo with no extension exist it will ask for overwrite !!! Windows problem
 
+
+Version 2.5.1
+Added Ln() function
+Added Jet and Turbo color maps
+Added Equivalent strain instead of Mises and Tresca
+Pretension bug fix
+Local mesh size bug fix
+Fixed property grid rendering in Linux
+
+Version 2.5.0
+Fixed thicken shell mesh bug
+Fixed box zoom bug
+
 Version 2.4.6
 Step symbol selection bug fix
 Pyramid element visualization bug fix
