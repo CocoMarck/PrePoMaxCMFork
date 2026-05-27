@@ -8655,7 +8655,20 @@ namespace PrePoMax
             if (_frmWeldingTrajectory != null && _frmWeldingTrajectory.Visible)
             {
                 //_frmSurfacePointPicker.PickedCoords(coords); <-- Esta func no existe. Mision para Style PrePoMax.
-                _frmWeldingTrajectory.AddSurfacePoint(pickedPoint);
+                if ( _frmWeldingTrajectory.SelectByPoints() )
+                {
+                    _frmWeldingTrajectory.AddSurfacePoint(pickedPoint);
+                }
+                else if ( _frmWeldingTrajectory.SelectByNodes() )
+                {
+                    int[] ids = _controller.GetSelectionIds();
+                    if ( ids.Length > 0)
+                    {
+                        FeNode node = _controller.Model.Mesh.Nodes[ ids[0] ];
+                        _frmWeldingTrajectory.AddSurfacePoint(node.Coor);
+                    }
+                }
+                    
             }
 
             // Relacionado con form
