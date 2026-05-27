@@ -880,6 +880,11 @@ namespace UserControls
                 if (selectedNode.Name == _weldingTrajectoriesName)
                 {
                     WeldingTrajectory?.Invoke();
+                    // /* Descartar esto.
+                    _weldingTrajectories.Nodes.Clear();
+                    _weldingTrajectories.Nodes.Add( new TreeNode("Welding1") );
+                    _weldingTrajectories.ExpandAll();
+                    // */
                     _doubleClick = false;
                     return;
                 }
