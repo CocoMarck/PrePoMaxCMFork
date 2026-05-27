@@ -185,7 +185,14 @@ namespace UserControls
             this.tpResults = new System.Windows.Forms.TabPage();
             this.stbResults = new UserControls.SearchTextBox();
             this.cltvResults = new UserControls.CodersLabTreeView();
+
+            // WeldingTab
+            this.tpWelding = new System.Windows.Forms.TabPage();
+            this.stbWelding = new UserControls.SearchTextBox();
+            this.cltvWelding = new UserControls.CodersLabTreeView();
+
             this.timerMouseMove = new System.Windows.Forms.Timer(this.components);
+            this.tpWelding.SuspendLayout(); // Welding Tab
             this.cmsTree.SuspendLayout();
             this.tcGeometryModelResults.SuspendLayout();
             this.tpGeometry.SuspendLayout();
@@ -667,6 +674,7 @@ namespace UserControls
             this.tcGeometryModelResults.Controls.Add(this.tpGeometry);
             this.tcGeometryModelResults.Controls.Add(this.tpModel);
             this.tcGeometryModelResults.Controls.Add(this.tpResults);
+            this.tcGeometryModelResults.Controls.Add(this.tpWelding); // WeldingTab
             this.tcGeometryModelResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcGeometryModelResults.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tcGeometryModelResults.Location = new System.Drawing.Point(0, 0);
@@ -1066,6 +1074,55 @@ namespace UserControls
             this.cltvResults.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.cltv_MouseDoubleClick);
             this.cltvResults.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cltv_MouseDown);
             this.cltvResults.MouseUp += new System.Windows.Forms.MouseEventHandler(this.cltv_MouseUp);
+
+            // WeldingTab
+            this.tpWelding.Controls.Add(this.stbWelding);
+            this.tpWelding.Controls.Add(this.cltvWelding);
+            this.tpWelding.Location = new System.Drawing.Point(4, 24);
+            this.tpWelding.Name = "tpWelding";
+            this.tpWelding.TabIndex = 3;
+            this.tpWelding.Size = new System.Drawing.Size(231, 470);
+            this.tpWelding.Text = "Welding";
+            this.tpWelding.UseVisualStyleBackColor = true;
+            // WeldingTab stb
+            this.stbWelding.Anchor = ((System.Windows.Forms.AnchorStyles)
+                (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+            this.stbWelding.Location = new System.Drawing.Point(0, 0);
+            this.stbWelding.Name = "stbWelding";
+            this.stbWelding.ReadOnly = false;
+            this.stbWelding.Size = new System.Drawing.Size(270, 22);
+            this.stbWelding.TabIndex = 1;
+            this.stbWelding.TextChanged += new System.Action<object, System.EventArgs>(this.stbWelding_TextChanged);
+            // WeldingTab cltv
+            this.cltvWelding.Anchor = ((System.Windows.Forms.AnchorStyles)
+                ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+            this.cltvWelding.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.cltvWelding.ChangeHighlightOnFocusLost = false;
+            this.cltvWelding.DisableMouse = false;
+            this.cltvWelding.HideSelection = false;
+            this.cltvWelding.ImageList = this.ilIcons;
+            this.cltvWelding.LabelEdit = true;
+            this.cltvWelding.Location = new System.Drawing.Point(0, 21);
+            this.cltvWelding.Name = "cltvWelding";
+            this.cltvWelding.SelectionMode = UserControls.TreeViewSelectionMode.MultiSelect;
+            this.cltvWelding.Size = new System.Drawing.Size(231, 450);
+            this.cltvWelding.TabIndex = 0;
+            
+            this.cltvWelding.MouseOverNodeChangedEvent += new System.Action<object>(this.cltv_MouseOverNodeChangedEvent);
+            this.cltvWelding.SelectionsChanged += new System.EventHandler(this.cltv_SelectionsChanged);
+            this.cltvWelding.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.cltv_AfterLabelEdit);
+            this.cltvWelding.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.cltv_BeforeCollapse);
+            this.cltvWelding.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.cltv_AfterCollapse);
+            this.cltvWelding.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.cltv_BeforeExpand);
+            this.cltvWelding.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.cltv_AfterExpand);
+            this.cltvWelding.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cltv_KeyDown);
+            this.cltvWelding.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.cltv_MouseDoubleClick);
+            this.cltvWelding.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cltv_MouseDown);
+            this.cltvWelding.MouseUp += new System.Windows.Forms.MouseEventHandler(this.cltv_MouseUp);
+            
             // 
             // timerMouseMove
             // 
@@ -1083,6 +1140,7 @@ namespace UserControls
             this.tpGeometry.ResumeLayout(false);
             this.tpModel.ResumeLayout(false);
             this.tpResults.ResumeLayout(false);
+            this.tpWelding.ResumeLayout(false); // WeldingTab
             this.ResumeLayout(false);
 
         }
@@ -1166,5 +1224,10 @@ namespace UserControls
         private System.Windows.Forms.ToolStripSeparator tsmiSpaceColor;
         private System.Windows.Forms.ToolStripMenuItem tsmiResetColor;
         private System.Windows.Forms.Timer timerMouseMove;
+
+        // WeldingTab
+        private System.Windows.Forms.TabPage tpWelding;
+        private CodersLabTreeView cltvWelding;
+        private SearchTextBox stbWelding;
     }
 }

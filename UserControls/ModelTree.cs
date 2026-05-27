@@ -35,7 +35,8 @@ namespace UserControls
     {
         Geometry,
         Model,
-        Results
+        Results,
+        Welding  // WeldingTab
     }
     public struct ContextMenuFields
     {
@@ -143,6 +144,8 @@ namespace UserControls
         private TreeNode _results;                  // 1
         private TreeNode _resultFieldOutputs;       //   2
         private TreeNode _resultHistoryOutputs;     //   2
+        // Welding Trajectories
+        private TreeNode _weldingTrajectories;   // 1
         // Geometry
         private string _geomPartsName = "Parts";
         private string _meshSetupItemsName = "Mesh Setup";
@@ -185,6 +188,8 @@ namespace UserControls
         private string _resultsName = "Results";
         private string _resultFieldOutputsName = "Field Outputs";
         private string _resultHistoryOutputsName = "History Outputs";
+        // Welding Trajectories
+        private string _weldingTrajectoriesName = "Trajectories";
 
 
         // Properties                                                                                                               
@@ -207,10 +212,12 @@ namespace UserControls
                 cltvGeometry.DisableMouse = value;
                 cltvModel.DisableMouse = value;
                 cltvResults.DisableMouse = value;
+                cltvWelding.DisableMouse = value; // WeldingTab
                 //
                 stbGeometry.Enabled = !value;
                 stbModel.Enabled = !value;
                 stbResults.Enabled = !value;
+                stbWelding.Enabled = !value; // WeldingTab
             }
         }
         public bool DisableGeometryAndModelTreeMouse
@@ -330,6 +337,10 @@ namespace UserControls
         public ModelTree()
         {
             InitializeComponent();
+            // WeldingTab Trajectories. Esto no esta en el lugar adecuado, pero aca esta bien para debug.
+            _weldingTrajectories = new TreeNode();
+            _weldingTrajectories.Name = _weldingTrajectoriesName;
+            _weldingTrajectories.Text = _weldingTrajectoriesName;
             //
             cltvGeometry.IsNodeRenameable = CanRename;
             cltvModel.IsNodeRenameable = CanRename;
@@ -417,6 +428,7 @@ namespace UserControls
             _prevStates.Add(cltvGeometry, null);
             _prevStates.Add(cltvModel, null);
             _prevStates.Add(cltvResults, null);
+            _prevStates.Add(cltvWelding, null); // WeldingTab
             //
             Clear();
         }
@@ -440,6 +452,11 @@ namespace UserControls
             FilterTree(cltvResults, stbResults.Text);
         }
 
+        private void stbWelding_TextChanged(object sender, EventArgs e)
+        {
+            FilterTree(cltvWelding, stbWelding.Text); // WeldingTab
+        }
+
 
         #region Geometry-Model-Results
         private ViewType GetViewType()
@@ -447,10 +464,12 @@ namespace UserControls
             if (tcGeometryModelResults.SelectedTab == tpGeometry) return ViewType.Geometry;
             else if (tcGeometryModelResults.SelectedTab == tpModel) return ViewType.Model;
             else if (tcGeometryModelResults.SelectedTab == tpResults) return ViewType.Results;
+            else if (tcGeometryModelResults.SelectedTab == tpWelding) return ViewType.Welding; // WeldingTab
             else throw new NotSupportedException();
         }
         private void tcGeometryModelResults_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (tcGeometryModelResults.SelectedTab == tpWelding) return; // WeldingTab Parche feo para evitar mensaje de error
             GeometryMeshResultsEvent?.Invoke(GetViewType());
         }
         public void SetGeometryTab()
@@ -1852,6 +1871,7 @@ namespace UserControls
             _contacts.Collapse();
             //
             ClearResults(); //calls cltvResults.SelectedNodes.Clear();
+            ClearWelding(); // WeldingTab Trajectories
         }
         public void ClearActiveTreeSelection()
         {
@@ -1909,6 +1929,19 @@ namespace UserControls
             _resultModel.ExpandAll();
             _resultMesh.ExpandAll();
             _results.ExpandAll();
+        }
+        // WeldingTab Trajectories
+        public void ClearWelding()
+        {
+            cltvWelding.SelectedNodes.Clear();
+            cltvWelding.Nodes.Clear();
+
+            _weldingTrajectories.Nodes.Clear();
+            _weldingTrajectories.Text = _weldingTrajectoriesName;
+
+            cltvWelding.Nodes.Add(_weldingTrajectories);
+
+            _weldingTrajectories.Expand();
         }
         //
         public void UpdateHighlight()
@@ -3075,6 +3108,7 @@ namespace UserControls
             if (tcGeometryModelResults.SelectedTab == tpGeometry) return cltvGeometry;
             else if (tcGeometryModelResults.SelectedTab == tpModel) return cltvModel;
             else if (tcGeometryModelResults.SelectedTab == tpResults) return cltvResults;
+            else if (tcGeometryModelResults.SelectedTab == tpWelding) return cltvWelding; // WeldingTab
             else throw new NotSupportedException();
         }
         private CodersLabTreeView GetTree(ViewType view)
@@ -3082,6 +3116,7 @@ namespace UserControls
             if (view == ViewType.Geometry) return cltvGeometry;
             else if (view == ViewType.Model) return cltvModel;
             else if (view == ViewType.Results) return cltvResults;
+            else if (view == ViewType.Welding) return cltvWelding; // WeldingTab
             else throw new NotSupportedException();
         }
         public bool[][] GetAllTreesExpandCollapseState(out string[][] allNames, bool skipModelParts = false)
