@@ -370,6 +370,7 @@ namespace PrePoMax.Forms
             {
                 e.SuppressKeyPress = true;
                 this.ActiveControl = dgvPoints; // fuerza Leave
+                TryToGetAndHighlightWeldingTrajectory();
             }
         }
 

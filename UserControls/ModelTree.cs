@@ -880,11 +880,6 @@ namespace UserControls
                 if (selectedNode.Name == _weldingTrajectoriesName)
                 {
                     WeldingTrajectory?.Invoke();
-                    // /* Descartar esto.
-                    _weldingTrajectories.Nodes.Clear();
-                    _weldingTrajectories.Nodes.Add( new TreeNode("Welding1") );
-                    _weldingTrajectories.ExpandAll();
-                    // */
                     _doubleClick = false;
                     return;
                 }
@@ -2077,6 +2072,8 @@ namespace UserControls
                         AddObjectsToNode(_modelReferencePointsName, _modelReferencePoints, model.Mesh.ReferencePoints);
                         // Coordinate systems
                         AddObjectsToNode(_modelCoordinateSystemsName, _modelCoordinateSystems, model.Mesh.CoordinateSystems);
+                        // Welding Trajectory
+                        AddObjectsToNode(_weldingTrajectoriesName, _weldingTrajectories, model.Mesh.CoordPointSets);
                     }
                     // Materials
                     AddObjectsToNode(_materialsName, _materials, model.Materials);
