@@ -29,5 +29,6 @@ namespace CaeGlobals
         //
         GeometryVertex = 9,     // geometryVertexIds
         GeometrySurface = 10,   // geometrySurfaceIds
+        SurfacePoint = 11,      // surfacePointIds? <- No existen. SurfacePoint CoordPointSets
     }
 }

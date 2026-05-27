@@ -843,6 +843,9 @@
     <Compile Include="Forms\ViewMasterSlaveMultiRegion.cs" />
     <Compile Include="Forms\ViewMultiRegion.cs" />
     <Compile Include="Forms\ViewError.cs" />
+    <Compile Include="Forms\ZZ_WeldingTrajectory\FrnWeldingTrajectory.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="Tools\GmshBase.cs" />
     <Compile Include="Program.cs" />
@@ -884,6 +887,8 @@
     <Compile Include="Settings\CalculixSettings.cs" />
     <Compile Include="Enums\UpdateModelType.cs" />
     <Compile Include="Annotations\AnnotationContainer.cs" />
+    <Compile Include="Utils\CoordPointExporter.cs" />
+    <Compile Include="Utils\Text\TextFilter.cs" />
     <EmbeddedResource Include="Forms\00_Common\FileExporter\FrmExportFileWithProperties.resx">
       <DependentUpon>FrmExportFileWithProperties.cs</DependentUpon>
     </EmbeddedResource>

@@ -29,6 +29,7 @@ namespace CaeGlobals
         EdgeAngle,
         SurfaceAngle,
         Part,
+        SurfacePoint, // SurfacePoint CoordPointSets
         // Geometry based
         Geometry,
         GeometryVertex,

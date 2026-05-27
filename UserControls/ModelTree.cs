@@ -326,6 +326,7 @@ namespace UserControls
         public event Action<string[]> FieldDataSelectEvent;
         public event Action RenderingOn;
         public event Action RenderingOff;
+        public event Action WeldingTrajectory;
 
 
         // Callbacks                                                                                                                
@@ -875,6 +876,13 @@ namespace UserControls
             if (e.Button == MouseButtons.Left && hit.Location == TreeViewHitTestLocations.Label)
             {
                 TreeNode selectedNode = tree.SelectedNode;
+                // FrmWeldingTrajectory CoordPointSets
+                if (selectedNode.Name == _weldingTrajectoriesName)
+                {
+                    WeldingTrajectory?.Invoke();
+                    _doubleClick = false;
+                    return;
+                }
                 //
                 if (selectedNode == null || ModifierKeys == Keys.Shift || ModifierKeys == Keys.Control) return;
                 //

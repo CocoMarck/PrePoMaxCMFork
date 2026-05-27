@@ -115,6 +115,7 @@ namespace PrePoMax
         private FrmResultHistoryOutput _frmResultHistoryOutput;
         private FrmViewResultHistoryOutput _frmViewResultHistoryOutput;
         private FrmTransformation _frmTransformation;
+        private FrmWeldingTrajectory _frmWeldingTrajectory; // Welding Trajectory CoordPointSets
         //
         #endregion  ################################################################################################################
 
@@ -313,6 +314,8 @@ namespace PrePoMax
                 _modelTree.FieldDataSelectEvent += ModelTree_FieldDataSelectEvent;
                 _modelTree.RenderingOff += () => _vtk.RenderingOn = false;
                 _modelTree.RenderingOn += () => _vtk.RenderingOn = true;
+                // WeldingTrajectory
+                _modelTree.WeldingTrajectory += NewWeldingTrajectory;
                 // Strip menus
                 tsFile.Location = new Point(0, 0);
                 tsViews.Location = new Point(tsFile.Left + tsFile.Width, 0);
@@ -343,6 +346,11 @@ namespace PrePoMax
                 // Forms
                 _formLocation = new Point(100, 100);
                 _allForms = new List<Form>();
+                // Init Welding Trajectory CoordPointSets
+                _frmWeldingTrajectory = new FrmWeldingTrajectory(_controller);
+                _frmWeldingTrajectory.Form_WriteDataToOutput = WriteDataToOutput;
+                _frmWeldingTrajectory.Form_RemoveAnnotations = tsbRemoveAnnotations_Click;
+                AddFormToAllForms(_frmWeldingTrajectory);
                 //
                 _frmSelectEntity = new FrmSelectEntity(_controller);
                 AddFormToAllForms(_frmSelectEntity);
@@ -947,6 +955,11 @@ namespace PrePoMax
             timerOutput.Stop();
         }
 
+        // NewWeldingTrajectory
+        private void NewWeldingTrajectory()
+        {
+            MessageBox.Show("NewWeldingTrajectory");
+        }
         #region ModelTree Events ###################################################################################################
         //
         internal void ModelTree_ViewEvent(ViewType viewType)

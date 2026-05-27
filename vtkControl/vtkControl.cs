@@ -193,6 +193,11 @@ namespace vtkControl
                         case vtkSelectBy.Node:
                         case vtkSelectBy.Element:
                         case vtkSelectBy.Part:
+                        case vtkSelectBy.SurfacePoint:
+                            // SurfacePoint CoordPointSets
+                            Debug.WriteLine("vtkSelectBy case: SurfacePoint");
+                            _style.SelectionBoxEnabled = false;
+                            break;
                         // Geometry
                         case vtkSelectBy.Geometry:
                         case vtkSelectBy.GeometryPart:
@@ -511,6 +516,12 @@ namespace vtkControl
                         case vtkSelectBy.GeometryPart:
                             PickByActor(out pickedActor, x1, y1, false);
                             break;
+                        /*
+                        case vtkSelectBy.SurfacePoint:
+                            // SurfacePoint CoordPointSets
+                            PickBySurfacePoint(out pickedActor, x1, y1); // Seleccion con mouse moviendose.
+                            break;
+                        */
                         default:
                             throw new NotSupportedException();
                     }
@@ -550,6 +561,28 @@ namespace vtkControl
                 }
                 //
                 Controller_ActorsPicked?.Invoke(mea, ModifierKeys, pickedActorNames.ToArray());
+            }
+            else if (_selectBy == vtkSelectBy.SurfacePoint)
+            {
+                // SurfacePoint CoordPointSet. Seleccionar con click izquierdo.
+                vtkActor pickedActor;
+                PickBySurfacePoint(out pickedActor, mea.Location.X, mea.Location.Y);
+
+                // Info for using events GG. Good and happy game.
+                vtkSelectOperation selectOperation;
+                if (Control.ModifierKeys == (Keys.Shift | Keys.Control)) selectOperation = vtkSelectOperation.Intersect;
+                else if (Control.ModifierKeys == Keys.Shift) selectOperation = vtkSelectOperation.Add;
+                else if (Control.ModifierKeys == Keys.Control) selectOperation = vtkSelectOperation.Subtract;
+                else selectOperation = vtkSelectOperation.None;
+                bool completelyInside = mea.Location.X > x2;
+                double[] pickedPoint = GetPickPoint(out pickedActor, mea.Location.X, mea.Location.Y);
+                double[] direction = _renderer.GetActiveCamera().GetDirectionOfProjection();
+                if (pickedActor == null) pickedActorNames = new string[0];
+                else pickedActorNames = new string[] { GetActorName(pickedActor) };
+
+                // This is the action, the very good mouse event
+                OnMouseLeftButtonUpSelection?.Invoke(pickedPoint, direction, null, completelyInside,
+                                                         selectOperation, pickedActorNames);
             }
             else
             {
@@ -1018,6 +1051,28 @@ namespace vtkControl
                 AddActorEdges(_mouseSelectionActorCurrent, false, vtkRendererLayer.Selection);
                 _selectedActors.Remove(_mouseSelectionActorCurrent);
             }
+        }
+        private void PickBySurfacePoint(
+            out vtkActor pickedActor, int x, int y
+        )
+        {
+            // SurfacePoint CoordPointSets
+            Debug.WriteLine("PickBySurfacePoint. Select by Surface. Try to pick.");
+
+            pickedActor = null;
+
+            vtkCellPicker picker = vtkCellPicker.New();
+            Debug.WriteLine("PickBySurfacePoint. Damn, vtkCellPicker, already");
+
+            picker.SetTolerance(0.0005);
+
+            int picked = picker.Pick(x, y, 0, _renderer);
+
+            if (picked != 1) return;
+
+            pickedActor = picker.GetActor();
+
+            if (pickedActor == null) return;
         }
         private void PickByActor(out vtkActor pickedActor, int x, int y, bool showLabel)
         {

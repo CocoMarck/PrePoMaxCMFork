@@ -13722,6 +13722,12 @@ namespace PrePoMax
                 {
                     ids = GetPartIdAtPoint(selectionNodeMouse);
                 }
+                else if (_selection.SelectItem == vtkSelectItem.SurfacePoint)
+                {
+                    // SurfacePoint CoordPoinSets.
+                    // Evitar crash. Esta func busca retornar ids siempre.
+                    ids = new int[0];
+                }
                 else throw new NotSupportedException();
                 // Remove offset
                 if (offsets != null && offsets.Length == 1 && !allZero) selectionNodeMouse.RemoveOffset(offsets[0]);
