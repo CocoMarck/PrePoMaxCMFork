@@ -55,18 +55,8 @@ namespace PrePoMax.Forms
         public FrmWeldingTrajectory(Controller controller)
         {
             _controller = controller;
-            _controller.SetSelectByToOff();
-            _coordPointSets = new CoordPointSet("Welding1");
-            if (_controller.Model.Mesh.CoordPointSets.Keys.Count > 0)
-            {
-                foreach (CoordPointSet value in _controller.Model.Mesh.CoordPointSets.Values)
-                {
-                    _coordPointSets = value;
-                    break;
-                }
-            }
+            _coordPointSets = new CoordPointSet("Welding_01");
             InitializeComponent();
-            TryToGetAndHighlightWeldingTrayectory();
         }
 
         private void InitializeComponent()
@@ -184,7 +174,7 @@ namespace PrePoMax.Forms
         {
             _coordPointSets.Name = coordPointSetName;
         }
-        private void TryToGetAndHighlightWeldingTrayectory()
+        private void TryToGetAndHighlightWeldingTrajectory()
         {
             // PMX | Intentar obtener data.
             if (_controller.Model.Mesh.CoordPointSets.ContainsKey(_coordPointSets.Name))
@@ -203,13 +193,20 @@ namespace PrePoMax.Forms
             UpdatePointCount(); // GUI
             FocusInLastRow(); // GUI
         }
-        public void PrepareForm(Controller controller)
+        public void PrepareForm()
         {
             // Controler
-            _controller = controller;
+            if (_controller.Model.Mesh.CoordPointSets.Keys.Count > 0)
+            {
+                foreach (CoordPointSet value in _controller.Model.Mesh.CoordPointSets.Values)
+                {
+                    _coordPointSets = value;
+                    tbPointSetName.Text = _coordPointSets.Name;
+                    break;
+                }
+            }
             _controller.SetSelectByToOff();
-
-            TryToGetAndHighlightWeldingTrayectory();
+            TryToGetAndHighlightWeldingTrajectory();
         }
 
         public void RemoveMeasureAnnotation()
@@ -346,7 +343,7 @@ namespace PrePoMax.Forms
             {
                 sfd.Filter = "CSV files (*.csv)|*csv|All files (*.*)|*.*";
                 sfd.Title = "Save file CSV";
-                sfd.FileName = "Teyectories.csv";
+                sfd.FileName = $"{_coordPointSets.Name}_Tejectories.csv";
 
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
@@ -365,7 +362,7 @@ namespace PrePoMax.Forms
             if (_coordPointSets.Name == name) return;
 
             _coordPointSets.Name = name;
-            TryToGetAndHighlightWeldingTrayectory();
+            TryToGetAndHighlightWeldingTrajectory();
         }
         private void tbPointSetName_KeyDown(object sender, KeyEventArgs e)
         {

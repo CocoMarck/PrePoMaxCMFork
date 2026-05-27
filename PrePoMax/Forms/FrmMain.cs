@@ -7117,6 +7117,7 @@ namespace PrePoMax
                 //
                 CloseAllForms();
                 SetFormLocation(_frmWeldingTrajectory);
+                _frmWeldingTrajectory.PrepareForm();
                 _frmWeldingTrajectory.Show();
             }
             catch (Exception ex)
@@ -8596,6 +8597,46 @@ namespace PrePoMax
         #endregion  ################################################################################################################
 
         #region Mouse selection methods  ###########################################################################################
+        // WeldingTrajectory SelectCoordPoint
+        public void SelectCoordPoint(
+            double[] pickedPoint, double[] selectionDirection,
+            double[][] planeParameters, bool completelyInside,
+            vtkSelectOperation selectOperation, string[] pickedPartNames)
+        {
+            Debug.WriteLine($"FrmMain. SelectCoordPoint. Entro: {pickedPoint}");
+
+            // Relacionado con form
+            PushMenuStates();
+            SetStateWorking(Globals.SelectionText);
+
+            // Obtener data
+            _controller.SelectCoordPoint(pickedPoint, pickedPartNames);
+            //List<double> coords = _controller.GetSelectionCoords(); <-- Esta func no existe. Mision para Style PrePoMax.
+
+            // Formulario
+            if (_frmWeldingTrajectory != null && _frmWeldingTrajectory.Visible)
+            {
+                //_frmSurfacePointPicker.PickedCoords(coords); <-- Esta func no existe. Mision para Style PrePoMax.
+                if (_frmWeldingTrajectory.SelectByPoints())
+                {
+                    _frmWeldingTrajectory.AddSurfacePoint(pickedPoint);
+                }
+                else if (_frmWeldingTrajectory.SelectByNodes())
+                {
+                    int[] ids = _controller.GetSelectionIds();
+                    if (ids.Length > 0)
+                    {
+                        FeNode node = _controller.Model.Mesh.Nodes[ids[0]];
+                        _frmWeldingTrajectory.AddSurfacePoint(node.Coor);
+                    }
+                }
+
+            }
+
+            // Relacionado con form
+            SetStateReady(Globals.SelectionText);
+            PopMenuStates();
+        }
         public void SelectPointOrArea(double[] pickedPoint, double[] selectionDirection,
                                       double[][] planeParameters, bool completelyInside,
                                       vtkSelectOperation selectOperation, string[] pickedPartNames)
@@ -8633,46 +8674,6 @@ namespace PrePoMax
             //
             SetStateReady(Globals.SelectionText);
             //
-            PopMenuStates();
-        }
-        // WeldingTrajectory SelectCoordPoint
-        public void SelectCoordPoint(
-            double[] pickedPoint, double[] selectionDirection,
-            double[][] planeParameters, bool completelyInside,
-            vtkSelectOperation selectOperation, string[] pickedPartNames)
-        {
-            Debug.WriteLine($"FrmMain. SelectCoordPoint. Entro: {pickedPoint}");
-
-            // Relacionado con form
-            PushMenuStates();
-            SetStateWorking(Globals.SelectionText);
-
-            // Obtener data
-            _controller.SelectCoordPoint(pickedPoint, pickedPartNames);
-            //List<double> coords = _controller.GetSelectionCoords(); <-- Esta func no existe. Mision para Style PrePoMax.
-
-            // Formulario
-            if (_frmWeldingTrajectory != null && _frmWeldingTrajectory.Visible)
-            {
-                //_frmSurfacePointPicker.PickedCoords(coords); <-- Esta func no existe. Mision para Style PrePoMax.
-                if ( _frmWeldingTrajectory.SelectByPoints() )
-                {
-                    _frmWeldingTrajectory.AddSurfacePoint(pickedPoint);
-                }
-                else if ( _frmWeldingTrajectory.SelectByNodes() )
-                {
-                    int[] ids = _controller.GetSelectionIds();
-                    if ( ids.Length > 0)
-                    {
-                        FeNode node = _controller.Model.Mesh.Nodes[ ids[0] ];
-                        _frmWeldingTrajectory.AddSurfacePoint(node.Coor);
-                    }
-                }
-                    
-            }
-
-            // Relacionado con form
-            SetStateReady(Globals.SelectionText);
             PopMenuStates();
         }
         public void SelectionChanged(int[] ids = null)
