@@ -45,4 +45,10 @@ Finalmente un `Retarget Solution` a todo el proyecto, desde `Solution Explorer`,
 
 Cuando se descarga un .zip desde internet y se descomprime en Windows, el sistema operativo puede marcar muchos archivos con el sistema de seguridad llamado: `Mark of the Web (MOTW)`.
 
-Esto hace que Windows considere los archivos como: `"archivos provenientes de internet"` 
+Esto hace que Windows considere los archivos como: `"archivos provenientes de internet"`.
+
+Ademas, se pueden descargar archivos de ejemplo desd este repo [PrePoMax-Models](https://gitlab.com/MatejB/PrePoMax-Models).
+
+```bash
+git clone "https://gitlab.com/MatejB/PrePoMax-Models"
+```

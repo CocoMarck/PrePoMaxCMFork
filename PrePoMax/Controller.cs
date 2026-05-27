@@ -327,6 +327,28 @@ namespace PrePoMax
         {
             return _commands.Errors;
         }
+        // WeldingTrajectory SelectCoordPoint
+        public void SelectCoordPoint(
+            double[] pickedPoint, string[] pickedPartNames
+        )
+        {
+            Debug.WriteLine($"Controller. SelectCoordPoint. Entro: {pickedPoint}");
+            try
+            {
+                _form.ActivateUserPick();
+
+                if (pickedPoint == null)
+                    return;
+
+                foreach (double coord in pickedPoint)
+                    Debug.Write($"`{coord}` ");
+            }
+            catch { }
+            finally
+            {
+                _form.DeactivateUserPick();
+            }
+        }
         // Setters                                                                                                                  
         public void SetQuerySelection(bool querySelection)
         {

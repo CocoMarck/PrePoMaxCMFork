@@ -328,6 +328,11 @@ namespace CaeMesh
                         throw new NotSupportedException();
                 }
             }
+            // CoordPointSets
+            if (_coordPointSets == null)
+            {
+                _coordPointSets = new OrderedDictionary<string, CoordPointSet>("Coord Point Sets", sc);
+            }
             // Compatibility for version v1.4.1
             if (_meshSetupItems == null) _meshSetupItems =
                     new OrderedDictionary<string, MeshSetupItem>("Mesh Setup Items", sc);

@@ -325,6 +325,7 @@ namespace PrePoMax
                 tscbSymbols.SelectedIndexChanged += tscbSymbols_SelectedIndexChanged;
                 // Vtk
                 _vtk.OnMouseLeftButtonUpSelection += SelectPointOrArea;
+                _vtk.OnMouseLeftButtonUpSelection += SelectCoordPoint; // WeldingTrajectory SelectCoordPoint
                 _vtk.Controller_GetAnnotationText += _controller.GetAnnotationText;
                 _vtk.Controller_GetNodeActorData = _controller.GetNodeActorData;
                 _vtk.Controller_GetCellActorData = _controller.GetCellActorData;
@@ -958,8 +959,18 @@ namespace PrePoMax
         // NewWeldingTrajectory
         private void NewWeldingTrajectory()
         {
-            MessageBox.Show("NewWeldingTrajectory");
+            try
+            {
+                Debug.WriteLine("NewWeldingTrajectory");
+                tsmiWeldingTrajectory_Click(null, null);
+            }
+            catch (Exception ex) 
+            {
+                ExceptionTools.Show(this, ex);
+            }
+            
         }
+
         #region ModelTree Events ###################################################################################################
         //
         internal void ModelTree_ViewEvent(ViewType viewType)
@@ -7098,6 +7109,23 @@ namespace PrePoMax
             }
         }
         //
+        private void tsmiWeldingTrajectory_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ClearSelection();
+                //
+                CloseAllForms();
+                SetFormLocation(_frmWeldingTrajectory);
+                _frmWeldingTrajectory.Show();
+            }
+            catch (Exception ex)
+            {
+                //
+                ExceptionTools.Show(this, ex);
+            }
+        }
+        //
         private void ShowColorBarSettings()
         {
             if (_controller.AnnotateWithColor == AnnotateWithColorEnum.FaceOrientation ||
@@ -8605,6 +8633,33 @@ namespace PrePoMax
             //
             SetStateReady(Globals.SelectionText);
             //
+            PopMenuStates();
+        }
+        // WeldingTrajectory SelectCoordPoint
+        public void SelectCoordPoint(
+            double[] pickedPoint, double[] selectionDirection,
+            double[][] planeParameters, bool completelyInside,
+            vtkSelectOperation selectOperation, string[] pickedPartNames)
+        {
+            Debug.WriteLine($"FrmMain. SelectCoordPoint. Entro: {pickedPoint}");
+
+            // Relacionado con form
+            PushMenuStates();
+            SetStateWorking(Globals.SelectionText);
+
+            // Obtener data
+            _controller.SelectCoordPoint(pickedPoint, pickedPartNames);
+            //List<double> coords = _controller.GetSelectionCoords(); <-- Esta func no existe. Mision para Style PrePoMax.
+
+            // Formulario
+            if (_frmWeldingTrajectory != null && _frmWeldingTrajectory.Visible)
+            {
+                //_frmSurfacePointPicker.PickedCoords(coords); <-- Esta func no existe. Mision para Style PrePoMax.
+                _frmWeldingTrajectory.AddSurfacePoint(pickedPoint);
+            }
+
+            // Relacionado con form
+            SetStateReady(Globals.SelectionText);
             PopMenuStates();
         }
         public void SelectionChanged(int[] ids = null)
