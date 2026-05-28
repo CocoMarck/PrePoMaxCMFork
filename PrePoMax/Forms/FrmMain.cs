@@ -974,7 +974,7 @@ namespace PrePoMax
             {
                 // HARDCODING NO PREPOMAX STYLE
                 // Edit welding trajectory
-                MessageBox.Show($"EditWeldingTrajectory {weldingTrajectoryName}");
+                Debug.WriteLine($"EditWeldingTrajectory {weldingTrajectoryName}");
                 try
                 {
                     ClearSelection();
@@ -1060,6 +1060,11 @@ namespace PrePoMax
                 else if (nodeName == _modelTree.LoadsName && stepName != null) CreateLoad(stepName);
                 else if (nodeName == _modelTree.DefinedFieldsName && stepName != null) CreateDefinedField(stepName);
                 else if (nodeName == _modelTree.AnalysesName) tsmiCreateAnalysis_Click(null, null);
+                else if (nodeName == _modelTree.WeldingTrajectoriesName)
+                {
+                    // WeldingTrajectories. Solo cuando exista malla.
+                    CreateWeldingTrajectory();
+                }
             }
             else if (_controller.CurrentResult != null && _controller.CurrentResult.Mesh != null &&
                      _controller.CurrentView == ViewGeometryModelResults.Results)
@@ -1069,15 +1074,11 @@ namespace PrePoMax
                 else if (nodeName == _modelTree.ResultFieldOutputsName) tsmiCreateResultFieldOutput_Click(null, null);
                 else if (nodeName == _modelTree.ResultHistoryOutputsName) tsmiCreateResultHistoryOutput_Click(null, null);
             }
-            if (nodeName == _modelTree.WeldingTrajectoriesName)
-            {
-                // WeldingTrajectories
-                CreateWeldingTrajectory();
-            }
+
         }
         private void ModelTree_EditEvent(NamedClass namedClass, string stepName)
         {
-            // WeldingTrajectory
+            // WeldingTrajectory. Editar en cualquier vista.
             if (namedClass is CoordPointSet)
             {
                 EditWeldingTrajectory(namedClass.Name);

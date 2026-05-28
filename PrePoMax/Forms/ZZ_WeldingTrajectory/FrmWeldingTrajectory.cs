@@ -56,7 +56,7 @@ namespace PrePoMax.Forms
         public FrmWeldingTrajectory(Controller controller)
         {
             _controller = controller;
-            _defaultName = "Welding_01";
+            _defaultName = "Welding_1";
             _coordPointSets = new CoordPointSet(_defaultName);
             InitializeComponent();
         }
@@ -118,23 +118,32 @@ namespace PrePoMax.Forms
 
             //// btnAddCoord buttons
             btnAddCoordWithText.Name = "btnAddCoordWithText";
+            btnAddCoordWithText.Image = global::PrePoMax.Properties.Resources.Import;
+            btnAddCoordWithText.ImageAlign = ContentAlignment.MiddleLeft;
             btnAddCoordWithText.Text = "Text";
+            btnAddCoordWithText.TextAlign = ContentAlignment.MiddleRight;
             btnAddCoordWithText.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAddCoordWithText.Size = new Size(80, 23);
+            btnAddCoordWithText.Size = new Size(65, 23);
             btnAddCoordWithText.Location = new Point(223, 88);
             btnAddCoordWithText.Click += btnAddCoordWithText_Click;
 
             btnAddCoordWithNode.Name = "btnAddCoordWithNode";
+            btnAddCoordWithNode.Image = global::PrePoMax.Properties.Resources.Node_set;
+            btnAddCoordWithNode.ImageAlign = ContentAlignment.MiddleLeft;
             btnAddCoordWithNode.Text = "Node";
+            btnAddCoordWithNode.TextAlign = ContentAlignment.MiddleRight;
             btnAddCoordWithNode.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAddCoordWithNode.Size = new Size(80, 23);
+            btnAddCoordWithNode.Size = new Size(65, 23);
             btnAddCoordWithNode.Location = new Point(223, 111);
             btnAddCoordWithNode.Click += btnAddCoordWithNode_Click;
 
             btnAddCoordWithPoint.Name = "btnAddCoordWithPoint";
+            btnAddCoordWithPoint.Image = global::PrePoMax.Properties.Resources.Reference_point;
+            btnAddCoordWithPoint.ImageAlign = ContentAlignment.MiddleLeft;
             btnAddCoordWithPoint.Text = "Point";
+            btnAddCoordWithPoint.TextAlign = ContentAlignment.MiddleRight;
             btnAddCoordWithPoint.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAddCoordWithPoint.Size = new Size(80, 23);
+            btnAddCoordWithPoint.Size = new Size(65, 23);
             btnAddCoordWithPoint.Location = new Point(223, 134);
             btnAddCoordWithPoint.Click += btnAddCoordWithPoint_Click;
 
