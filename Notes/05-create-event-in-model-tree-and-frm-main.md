@@ -26,3 +26,32 @@ if (nodeName == _modelTree.WeldingTrajectoriesName)
     MessageBox.Show("Create");
 }
 ```
+
+### De hecho, haciendo todo lo que se vio en este documento, ya de una jala con el doble click.
+
+----
+
+## Agregar evento a subnodo. En evento de Editar.
+Primero en `ModelTree`. Existe el metodo `private void tsmiEdit_Click(object sender, EventArgs e)`. La cual invoca a `EditEvent?Invoke((NamedClass)selectedNode.Tag, stepName);`
+
+En esta función, para que veas un message cada edit moment que pasa puedes ponerle esto en el `try`:
+```csharp
+MessageBox.Show( $"Editing: `{selectedNode.Tag}`" ); // DEBUG
+```
+
+Y en el `FrmMain`, en el metodo `private void ModelTree_EditEvent`. Este es lo invocado en el model tree. Agregamos nuestro if, y recuerda aver metido tus subnodos en `AddObjectToNode`, que esta en `TreeNode`.
+```csharp
+// WeldingTrajectory
+if (namedClass is CoordPointSet)
+{
+    MessageBox.Show( namedClass.Name );
+}
+``` 
+> El message box ya debe ser tu evento. Y si, le envias el name del nodo.
+
+Recordatorio de lo que pide el metodo `AddObjectsToNode`:
+```csharp
+private void AddObjectsToNode<TKey, TVal>(
+    string initialNodeName, TreeNode node, IDictionary<TKey, TVal> dictionary, bool countNodes = true 
+)
+```

@@ -878,13 +878,6 @@ namespace UserControls
             if (e.Button == MouseButtons.Left && hit.Location == TreeViewHitTestLocations.Label)
             {
                 TreeNode selectedNode = tree.SelectedNode;
-                // FrmWeldingTrajectory CoordPointSets
-                if (selectedNode.Name == _weldingTrajectoriesName)
-                {
-                    WeldingTrajectory?.Invoke();
-                    _doubleClick = false;
-                    return;
-                }
                 //
                 if (selectedNode == null || ModifierKeys == Keys.Shift || ModifierKeys == Keys.Control) return;
                 //

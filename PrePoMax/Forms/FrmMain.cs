@@ -969,7 +969,6 @@ namespace PrePoMax
             {
                 ExceptionTools.Show(this, ex);
             }
-            RegenerateTree(false);
         }
         private void LoadWeldingTrajectory()
         {
@@ -1066,6 +1065,11 @@ namespace PrePoMax
         }
         private void ModelTree_EditEvent(NamedClass namedClass, string stepName)
         {
+            // WeldingTrajectory
+            if (namedClass is CoordPointSet)
+            {
+                MessageBox.Show( namedClass.Name );
+            }
             // Geometry
             if (_controller.CurrentView == ViewGeometryModelResults.Geometry)
             {
@@ -7147,6 +7151,7 @@ namespace PrePoMax
                 //
                 ExceptionTools.Show(this, ex);
             }
+            RegenerateTree(false);
         }
         //
         private void ShowColorBarSettings()
