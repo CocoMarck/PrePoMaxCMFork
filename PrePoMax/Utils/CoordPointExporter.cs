@@ -7,7 +7,7 @@ namespace PrePoMax.Utils
 {
     internal class CoordPointExporter
     {
-        public static bool ExportXYZ(CoordPointSet pointSet, string fileName)
+        public static bool ExportXYZ(CoordPointSet pointSet, string fileName, bool countById=false)
         // Formato |
         //         V
         /*
@@ -42,12 +42,29 @@ namespace PrePoMax.Utils
                 "# order;activity;x-coordinate;y-coordinate;z-coordinate;x-orientation;y-orientation;z-orientation"
             );
 
-            foreach (CoordPoint point in pointSet.Points)
+            if (countById)
             {
-                lines.Add(
-                    $"{point.Id};true;{point.X};{point.Y};{point.Z};0;0;1"
-                );
+                // Por id acumulativo.
+                foreach (CoordPoint point in pointSet.Points)
+                {
+                    lines.Add(
+                        $"{point.Id};true;{point.X};{point.Y};{point.Z};0.0;0.0;1.0"
+                    );
+                }
             }
+            else 
+            {
+                // Por cantidad de puntos en set
+                int index = 1;
+                foreach (CoordPoint point in pointSet.Points)
+                {
+                    lines.Add(
+                        $"{index};true;{point.X};{point.Y};{point.Z};0.0;0.0;1.0"
+                    );
+                    index++;
+                }
+            }
+            // Escribir data
             try
             {
                 File.WriteAllLines(fileName, lines);
