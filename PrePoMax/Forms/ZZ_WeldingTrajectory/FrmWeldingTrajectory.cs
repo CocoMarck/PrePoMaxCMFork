@@ -1,6 +1,7 @@
 ﻿// PrePoMax
 using CaeGlobals;
 using CaeMesh;
+using CommandLine;
 
 // CocoMarck
 using PrePoMax.Utils;
@@ -56,7 +57,7 @@ namespace PrePoMax.Forms
         public FrmWeldingTrajectory(Controller controller)
         {
             _controller = controller;
-            _defaultName = "Welding_1";
+            _defaultName = "Weld1";
             _coordPointSets = new CoordPointSet(_defaultName);
             InitializeComponent();
         }
@@ -377,9 +378,13 @@ namespace PrePoMax.Forms
         private void RefreshPointList()
         {
             dgvPoints.Rows.Clear();
-            foreach (var point in _coordPointSets.Points)
+            int index = 1;
+            foreach (CoordPoint point in _coordPointSets.Points)
             {
-                dgvPoints.Rows.Add(point.Id, point.Coor[0], point.Coor[1], point.Coor[2]);
+                // Tambien se puedo por id acumulativo, pero mejor que se vea el index; Es mas intuitivo.
+                //dgvPoints.Rows.Add(point.Id, point.Coor[0], point.Coor[1], point.Coor[2]);
+                dgvPoints.Rows.Add(index, point.Coor[0], point.Coor[1], point.Coor[2]);
+                index++;
             }
         }
 

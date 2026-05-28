@@ -7157,7 +7157,7 @@ namespace PrePoMax
                 SetFormLocation(_frmWeldingTrajectory);
                 
                 // PMX Agregar al model mesh si aun no existe. Guardar en diccionario.
-                string weldingTrajectoryName = $"Welding_{_controller.Model.Mesh.CoordPointSets.Keys.Count}";
+                string weldingTrajectoryName = $"Weld{_controller.Model.Mesh.CoordPointSets.Keys.Count}";
                 if (!_controller.Model.Mesh.CoordPointSets.ContainsKey(weldingTrajectoryName))
                 {
                     _controller.Model.Mesh.CoordPointSets.Add(
