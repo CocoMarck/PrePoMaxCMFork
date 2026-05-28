@@ -970,13 +970,29 @@ namespace PrePoMax
                 ExceptionTools.Show(this, ex);
             }
         }
-        private void LoadWeldingTrajectory()
+        private void EditWeldingTrajectory(string weldingTrajectoryName)
         {
             try
             {
-                Debug.WriteLine("LoadWeldingTrajectory");
+                Debug.WriteLine("EditWeldingTrajectory");
                 RegenerateTree(false);
-                tsmiWeldingTrajectories_Click(null, null);
+                // HARDCODING NO PREPOMAX STYLE
+                // Edit welding trajectory
+                try
+                {
+                    ClearSelection();
+                    //
+                    CloseAllForms();
+                    SetFormLocation(_frmWeldingTrajectory);
+                    _frmWeldingTrajectory.PrepareForm(weldingTrajectoryName);
+                    _frmWeldingTrajectory.Show();
+                }
+                catch (Exception ex)
+                {
+                    //
+                    ExceptionTools.Show(this, ex);
+                }
+                RegenerateTree(false);
             }
             catch (Exception ex)
             {
@@ -1068,7 +1084,7 @@ namespace PrePoMax
             // WeldingTrajectory
             if (namedClass is CoordPointSet)
             {
-                MessageBox.Show( namedClass.Name );
+                EditWeldingTrajectory(namedClass.Name);
             }
             // Geometry
             if (_controller.CurrentView == ViewGeometryModelResults.Geometry)
