@@ -843,7 +843,7 @@
     <Compile Include="Forms\ViewMasterSlaveMultiRegion.cs" />
     <Compile Include="Forms\ViewMultiRegion.cs" />
     <Compile Include="Forms\ViewError.cs" />
-    <Compile Include="Forms\ZZ_WeldingTrajectory\FrnWeldingTrajectory.cs">
+    <Compile Include="Forms\ZZ_WeldingTrajectory\FrmWeldingTrajectory.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Globals.cs" />

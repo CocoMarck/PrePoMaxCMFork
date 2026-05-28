@@ -50,12 +50,14 @@ namespace PrePoMax.Forms
 
         // Para guardado en PMX File
         private CoordPointSet _coordPointSets;
+        private string _defaultName;
 
         // Constructors
         public FrmWeldingTrajectory(Controller controller)
         {
             _controller = controller;
-            _coordPointSets = new CoordPointSet("Welding_01");
+            _defaultName = "Welding_01";
+            _coordPointSets = new CoordPointSet(_defaultName);
             InitializeComponent();
         }
 
@@ -193,18 +195,26 @@ namespace PrePoMax.Forms
             UpdatePointCount(); // GUI
             FocusInLastRow(); // GUI
         }
-        public void PrepareForm()
+        public void PrepareForm(string name = "")
         {
-            // Controler
-            if (_controller.Model.Mesh.CoordPointSets.Keys.Count > 0)
+            if (name.IsNullOrEmptyOrWhiteSpace()) 
+            {
+                name = _defaultName;
+            }
+            // Controler. Establecer nombre de set de puntos de coordenadas
+            if (_controller.Model.Mesh.CoordPointSets.Keys.Count > 0 && name == _defaultName)
             {
                 foreach (CoordPointSet value in _controller.Model.Mesh.CoordPointSets.Values)
                 {
                     _coordPointSets = value;
-                    tbPointSetName.Text = _coordPointSets.Name;
                     break;
                 }
             }
+            else 
+            {
+                _coordPointSets.Name = name;
+            }
+            tbPointSetName.Text = _coordPointSets.Name;
             _controller.SetSelectByToOff();
             TryToGetAndHighlightWeldingTrajectory();
         }
@@ -285,7 +295,7 @@ namespace PrePoMax.Forms
             int lastRowIndex = dgvPoints.Rows.Count - 1;
             dgvPoints.CurrentCell = dgvPoints.Rows[lastRowIndex].Cells[3];
         }
-        // Validacion de datos en tabla
+        // Validacion de datos. Tabla, textbox. Etc.
         private bool IsNumeric(string text)
         {
             double result;

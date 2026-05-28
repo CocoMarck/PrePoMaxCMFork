@@ -281,6 +281,8 @@ namespace UserControls
         public string ResultCoordinateSystemsName { get { return _resultCoordinateSystemsName; } }
         public string ResultHistoryOutputsName { get { return _resultHistoryOutputsName; } }
         public string ResultFieldOutputsName { get { return _resultFieldOutputsName; } }
+        // Welding Trajectories
+        public string WeldingTrajectoriesName { get { return _weldingTrajectoriesName; } }
 
 
         // Events                                                                                                                   
@@ -3246,6 +3248,8 @@ namespace UserControls
             else if (node.TreeView == cltvResults && node.Name == _resultFieldOutputsName) return true;
             else if (node.TreeView == cltvResults && node.Name == _resultHistoryOutputsName) return true;
             //
+            // WeldingTrajectory
+            else if (node.TreeView == cltvWelding && node.Name == _weldingTrajectoriesName) return true;
             else return false;
         }
         private bool CanRename(TreeNode node)

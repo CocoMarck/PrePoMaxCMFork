@@ -315,7 +315,7 @@ namespace PrePoMax
                 _modelTree.RenderingOff += () => _vtk.RenderingOn = false;
                 _modelTree.RenderingOn += () => _vtk.RenderingOn = true;
                 // WeldingTrajectory
-                _modelTree.WeldingTrajectory += NewWeldingTrajectory;
+                _modelTree.WeldingTrajectory += CreateWeldingTrajectory;
                 // Strip menus
                 tsFile.Location = new Point(0, 0);
                 tsViews.Location = new Point(tsFile.Left + tsFile.Width, 0);
@@ -956,19 +956,34 @@ namespace PrePoMax
             timerOutput.Stop();
         }
 
-        // NewWeldingTrajectory
-        private void NewWeldingTrajectory()
+        // Create and Load | WeldingTrajectory Node and subnode
+        private void CreateWeldingTrajectory()
         {
+            RegenerateTree(false);
             try
             {
-                Debug.WriteLine("NewWeldingTrajectory");
-                tsmiWeldingTrajectory_Click(null, null);
+                Debug.WriteLine("CreateWeldingTrajectory");
+                tsmiWeldingTrajectories_Click(null, null);
             }
             catch (Exception ex) 
             {
                 ExceptionTools.Show(this, ex);
             }
-            
+            RegenerateTree(false);
+        }
+        private void LoadWeldingTrajectory()
+        {
+            try
+            {
+                Debug.WriteLine("LoadWeldingTrajectory");
+                RegenerateTree(false);
+                tsmiWeldingTrajectories_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                ExceptionTools.Show(this, ex);
+            }
+
         }
 
         #region ModelTree Events ###################################################################################################
@@ -1042,6 +1057,11 @@ namespace PrePoMax
                 else if (nodeName == _modelTree.ResultCoordinateSystemsName) tsmiCreateResultCoordinateSystem_Click(null, null);
                 else if (nodeName == _modelTree.ResultFieldOutputsName) tsmiCreateResultFieldOutput_Click(null, null);
                 else if (nodeName == _modelTree.ResultHistoryOutputsName) tsmiCreateResultHistoryOutput_Click(null, null);
+            }
+            if (nodeName == _modelTree.WeldingTrajectoriesName)
+            {
+                // WeldingTrajectories
+                CreateWeldingTrajectory();
             }
         }
         private void ModelTree_EditEvent(NamedClass namedClass, string stepName)
@@ -7109,15 +7129,17 @@ namespace PrePoMax
             }
         }
         //
-        private void tsmiWeldingTrajectory_Click(object sender, EventArgs e)
+        private void tsmiWeldingTrajectories_Click(object sender, EventArgs e)
         {
+            // Create welding trajectory
             try
             {
                 ClearSelection();
                 //
                 CloseAllForms();
                 SetFormLocation(_frmWeldingTrajectory);
-                _frmWeldingTrajectory.PrepareForm();
+                string weldingTrajectoryName = $"Welding_{_controller.Model.Mesh.CoordPointSets.Keys.Count}";
+                _frmWeldingTrajectory.PrepareForm( weldingTrajectoryName );
                 _frmWeldingTrajectory.Show();
             }
             catch (Exception ex)
