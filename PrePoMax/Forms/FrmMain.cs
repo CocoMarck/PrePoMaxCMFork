@@ -314,8 +314,6 @@ namespace PrePoMax
                 _modelTree.FieldDataSelectEvent += ModelTree_FieldDataSelectEvent;
                 _modelTree.RenderingOff += () => _vtk.RenderingOn = false;
                 _modelTree.RenderingOn += () => _vtk.RenderingOn = true;
-                // WeldingTrajectory
-                _modelTree.WeldingTrajectory += CreateWeldingTrajectory;
                 // Strip menus
                 tsFile.Location = new Point(0, 0);
                 tsViews.Location = new Point(tsFile.Left + tsFile.Width, 0);
@@ -974,10 +972,9 @@ namespace PrePoMax
         {
             try
             {
-                Debug.WriteLine("EditWeldingTrajectory");
-                RegenerateTree(false);
                 // HARDCODING NO PREPOMAX STYLE
                 // Edit welding trajectory
+                MessageBox.Show($"EditWeldingTrajectory {weldingTrajectoryName}");
                 try
                 {
                     ClearSelection();
@@ -992,7 +989,6 @@ namespace PrePoMax
                     //
                     ExceptionTools.Show(this, ex);
                 }
-                RegenerateTree(false);
             }
             catch (Exception ex)
             {
@@ -7158,7 +7154,17 @@ namespace PrePoMax
                 //
                 CloseAllForms();
                 SetFormLocation(_frmWeldingTrajectory);
+                
+                // PMX Agregar al model mesh si aun no existe. Guardar en diccionario.
                 string weldingTrajectoryName = $"Welding_{_controller.Model.Mesh.CoordPointSets.Keys.Count}";
+                if (!_controller.Model.Mesh.CoordPointSets.ContainsKey(weldingTrajectoryName))
+                {
+                    _controller.Model.Mesh.CoordPointSets.Add(
+                        weldingTrajectoryName, new CoordPointSet(weldingTrajectoryName)
+                    );
+                }
+                RegenerateTree(false);
+                // Preparar fomulario
                 _frmWeldingTrajectory.PrepareForm( weldingTrajectoryName );
                 _frmWeldingTrajectory.Show();
             }
@@ -7167,7 +7173,6 @@ namespace PrePoMax
                 //
                 ExceptionTools.Show(this, ex);
             }
-            RegenerateTree(false);
         }
         //
         private void ShowColorBarSettings()

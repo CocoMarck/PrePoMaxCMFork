@@ -328,7 +328,6 @@ namespace UserControls
         public event Action<string[]> FieldDataSelectEvent;
         public event Action RenderingOn;
         public event Action RenderingOff;
-        public event Action WeldingTrajectory;
 
 
         // Callbacks                                                                                                                

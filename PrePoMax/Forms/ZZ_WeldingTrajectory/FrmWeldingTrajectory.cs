@@ -172,51 +172,32 @@ namespace PrePoMax.Forms
         }
 
         // Eventos principales
-        public void SetWeldingTrajectoryName(string coordPointSetName)
-        {
-            _coordPointSets.Name = coordPointSetName;
-        }
-        private void TryToGetAndHighlightWeldingTrajectory()
-        {
+        private bool GetWeldingTrajectory(string name) {
             // PMX | Intentar obtener data.
-            if (_controller.Model.Mesh.CoordPointSets.ContainsKey(_coordPointSets.Name))
+            if (_controller.Model.Mesh.CoordPointSets.ContainsKey(name))
             {
-                _coordPointSets = _controller.Model.Mesh.CoordPointSets[_coordPointSets.Name];
-                Highlight(); // Render
+                _coordPointSets = _controller.Model.Mesh.CoordPointSets[name];
+                return true;
             }
-            else
-            {
-                // Limpia mugrete temp.
-                _coordPointSets = new CoordPointSet(_coordPointSets.Name);
-                _controller.HighlightNodes(new double[0][]);
+            else { 
+                return false;
             }
+        }
+        private void TryToGetAndHighlightWeldingTrajectory(string name)
+        {
+            GetWeldingTrajectory(name);
             // Actualizar data
+            Highlight(); // Render
             RefreshPointList(); // GUI
             UpdatePointCount(); // GUI
             FocusInLastRow(); // GUI
         }
         public void PrepareForm(string name = "")
         {
-            if (name.IsNullOrEmptyOrWhiteSpace()) 
-            {
-                name = _defaultName;
-            }
-            // Controler. Establecer nombre de set de puntos de coordenadas
-            if (_controller.Model.Mesh.CoordPointSets.Keys.Count > 0 && name == _defaultName)
-            {
-                foreach (CoordPointSet value in _controller.Model.Mesh.CoordPointSets.Values)
-                {
-                    _coordPointSets = value;
-                    break;
-                }
-            }
-            else 
-            {
-                _coordPointSets.Name = name;
-            }
-            tbPointSetName.Text = _coordPointSets.Name;
+            // Obtener data y rendirizar
             _controller.SetSelectByToOff();
-            TryToGetAndHighlightWeldingTrajectory();
+            TryToGetAndHighlightWeldingTrajectory(name);
+            tbPointSetName.Text = _coordPointSets.Name;
         }
 
         public void RemoveMeasureAnnotation()
@@ -371,8 +352,7 @@ namespace PrePoMax.Forms
             if (name == "") return;
             if (_coordPointSets.Name == name) return;
 
-            _coordPointSets.Name = name;
-            TryToGetAndHighlightWeldingTrajectory();
+            TryToGetAndHighlightWeldingTrajectory(name);
         }
         private void tbPointSetName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -380,7 +360,7 @@ namespace PrePoMax.Forms
             {
                 e.SuppressKeyPress = true;
                 this.ActiveControl = dgvPoints; // fuerza Leave
-                TryToGetAndHighlightWeldingTrajectory();
+                TryToGetAndHighlightWeldingTrajectory(_coordPointSets.Name);
             }
         }
 
@@ -427,11 +407,13 @@ namespace PrePoMax.Forms
             UpdatePointCount(); // GUI
             FocusInLastRow(); // GUI
 
+            /* NO DEBE GUARDAR. Delegado a evento create.
             // PMX Agregar al model mesh si aun no existe.
             if (!_controller.Model.Mesh.CoordPointSets.ContainsKey(_coordPointSets.Name))
             {
                 _controller.Model.Mesh.CoordPointSets.Add(_coordPointSets.Name, _coordPointSets);
             }
+            */
         }
 
         // SelectBy
