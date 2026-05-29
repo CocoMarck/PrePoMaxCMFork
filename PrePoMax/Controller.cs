@@ -7506,11 +7506,25 @@ namespace PrePoMax
             //
             if (feModelUpdate) FeModelUpdate(UpdateType.Check | UpdateType.RedrawSymbols);
         }
+        public void ReplaceCoordPointSet(string oldCoordPointSetName, CoordPointSet coordPointSet, bool feModelUpdate) 
+        {
+            // Raplace CoordPointSet string name, with new CoordPointSet object
+            _model.Mesh.CoordPointSets.Replace(oldCoordPointSetName, coordPointSet.Name, coordPointSet);
+            _form.UpdateTreeNode( ViewGeometryModelResults.Model, oldCoordPointSetName, coordPointSet, null, feModelUpdate );
+            if (feModelUpdate) FeModelUpdate(UpdateType.Check | UpdateType.RedrawSymbols);
+        }
         public void RenameNodeSet(string oldNodeSetName, string newNodeSetName)
         { 
             FeNodeSet nodeSet = _model.Mesh.NodeSets[oldNodeSetName];
             nodeSet.Name = newNodeSetName;
             ReplaceNodeSet(oldNodeSetName, nodeSet, true);
+        }
+        public void RenameCoordPointSet(string oldCoordPointSetName, string newCoordPointSetName) 
+        {
+            // Ranaming CoordPointSet jejej Welding Trajectories. Chido. GG.
+            CoordPointSet coordPointSet = _model.Mesh.CoordPointSets[oldCoordPointSetName];
+            coordPointSet.Name = newCoordPointSetName;
+            ReplaceCoordPointSet(oldCoordPointSetName, coordPointSet, true);
         }
         public void DuplicateNodeSets(string[] nodeSetNames)
         {
@@ -13138,6 +13152,10 @@ namespace PrePoMax
                     return CheckName(item.Name, newName, GetLoadNamesForStep(stepName), "load");
                 else if (item is DefinedField)
                     return CheckName(item.Name, newName, GetDefinedFieldNamesForStep(stepName), "defined field");
+                else if (item is CoordPointSet)
+                    // Welding Trajectories
+                    //return true;
+                    return CheckName(item.Name, newName, GetAllMeshEntityNames(), "coord point set");
                 //
                 else if (item is AnalysisJob)
                     return CheckName(item.Name, newName, GetJobNames(), "analysis");
@@ -13175,6 +13193,13 @@ namespace PrePoMax
         }
         public void Rename(Type itemType, string itemName, string newName, string stepName, ViewGeometryModelResults view)
         {
+            if (typeof(CoordPointSet).IsAssignableFrom(itemType))
+            {
+                // WeldingTrajectories Reneme CoordPointSet Tree Node.
+                Debug.WriteLine("Fake Renaming jejej. GG");
+                RenameCoordPointSet(itemName, newName);
+                return;
+            }
             if (view == ViewGeometryModelResults.Geometry)
             {
                 if (typeof(GeometryPart).IsAssignableFrom(itemType)) RenameGeometryPart(itemName, newName);

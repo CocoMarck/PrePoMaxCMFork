@@ -834,6 +834,7 @@ namespace CaeMesh
             names.AddRange(_elementSets.Keys);
             names.AddRange(_surfaces.Keys);
             names.AddRange(_referencePoints.Keys);
+            names.AddRange(_coordPointSets.Keys); // CoordPointSets WeldingTrajectories
             return names.ToArray();
         }
 

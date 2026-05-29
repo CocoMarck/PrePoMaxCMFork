@@ -343,6 +343,9 @@ namespace UserControls
             _weldingTrajectories = new TreeNode();
             _weldingTrajectories.Name = _weldingTrajectoriesName;
             _weldingTrajectories.Text = _weldingTrajectoriesName;
+            // WeldingTab | Raname events
+            cltvWelding.IsNodeRenameable = CanRename;
+            cltvWelding.CheckNodeName = CheckNodeName;
             //
             cltvGeometry.IsNodeRenameable = CanRename;
             cltvModel.IsNodeRenameable = CanRename;
@@ -3273,6 +3276,9 @@ namespace UserControls
             //
             else if (node.Tag is ResultFieldOutput) return true;
             else if (node.Tag is ResultHistoryOutput) return true;
+            //
+            // Welding tab
+            else if (node.Tag is CoordPointSet) return true;
             //
             else return false;
         }
