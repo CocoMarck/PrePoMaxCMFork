@@ -889,6 +889,7 @@
     <Compile Include="Annotations\AnnotationContainer.cs" />
     <Compile Include="Utils\CoordPointExporter.cs" />
     <Compile Include="Utils\Text\TextFilter.cs" />
+    <Compile Include="Views\WinForms\Dialogs\PromptDialog.cs" />
     <EmbeddedResource Include="Forms\00_Common\FileExporter\FrmExportFileWithProperties.resx">
       <DependentUpon>FrmExportFileWithProperties.cs</DependentUpon>
     </EmbeddedResource>

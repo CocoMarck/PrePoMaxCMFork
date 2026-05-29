@@ -62,10 +62,11 @@ En `public struct ContextMenuFields`
 ```
 Lo agregamos al final.
 
-En el `public string[] IntersectSelectionWithList(NamedClass[] list)`. Agregamos la acción de exportar.
+Agregamos la acción de exportar.
 ```csharp
         public event Action<NamedClass, string> ExportEvent; // WedingTrajectory CoordPointSet Export
 ```
+> Cerca dell `public string[] IntersectSelectionWithList(NamedClass[] list)`.
 
 En `private void PrepareToolStripItem(CodersLabTreeView tree)`. Preparamos el tsmi export.
 ```csharp

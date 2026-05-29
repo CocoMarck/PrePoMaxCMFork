@@ -15,7 +15,6 @@ using CaeResults;
 using FileInOut.Output;
 using PrePoMax.Commands;
 using PrePoMax.Forms;
-using PrePoMax.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,6 +32,10 @@ using System.Windows.Forms;
 using UserControls;
 using vtkControl;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
+
+// CocoMarck
+using PrePoMax.Utils;
+using PrePoMax.Views.WinForms.Dialogs;
 
 
 namespace PrePoMax
@@ -282,6 +285,7 @@ namespace PrePoMax
                 _modelTree.CreateEvent += ModelTree_CreateEvent;
                 _modelTree.EditEvent += ModelTree_EditEvent;
                 _modelTree.ExportEvent += ModelTree_ExportEvent; // Evento de model tree WeldingTrajectory Export
+                _modelTree.RenameButtonEvent += ModelTree_RenameButtonEvent;
                 _modelTree.RenameEvent += ModelTree_RenameEvent;
                 _modelTree.SetPartColorEvent += ModelTree_SetPartColorEvent;
                 _modelTree.ResetPartColorEvent += ModelTree_ResetPartColorEvent;
@@ -1151,6 +1155,19 @@ namespace PrePoMax
                 else if (namedClass is HistoryResultData hd) ViewResultHistoryOutputData(hd);
                 else if (namedClass is FieldData) ShowLegendSettings();
             }
+        }
+
+        private void RanameNameClassWithStepName(NamedClass namedClass, string stepName) 
+        {
+            // Renombrar con conroller y custom input. Y regenerar arbol.
+            string newName = PromptDialog.Show("New name:", $"Rename {stepName}");
+            _controller.RenameCommand(namedClass, newName, stepName);
+            RegenerateTree(false);
+        }
+        private void ModelTree_RenameButtonEvent(NamedClass namedClass, string stepName)
+        {
+            //MessageBox.Show($"Rename {namedClass.Name}");
+            RanameNameClassWithStepName(namedClass, stepName);
         }
         private void ModelTree_ExportEvent(NamedClass namedClass, string stepName)
         {

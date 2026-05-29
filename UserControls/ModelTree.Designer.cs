@@ -174,6 +174,7 @@ namespace UserControls
             this.tsmiSpaceDelete = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiExport = new System.Windows.Forms.ToolStripMenuItem(); // WeldingTrajectory CoordPointSet
+            this.tsmiRename = new System.Windows.Forms.ToolStripMenuItem();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
             this.ilStatusIcons = new System.Windows.Forms.ImageList(this.components);
             this.tcGeometryModelResults = new System.Windows.Forms.TabControl();
@@ -257,6 +258,7 @@ namespace UserControls
             this.tsmiCollapseAll,
             this.tsmiSpaceDelete,
             this.tsmiDelete,
+            this.tsmiRename,
             this.tsmiExport, // WeldingTrajectory CoordPointSet
             });
             this.cmsTree.Name = "cmsTree";
@@ -612,6 +614,13 @@ namespace UserControls
             this.tsmiDelete.Size = new System.Drawing.Size(211, 22);
             this.tsmiDelete.Text = "Delete";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
+            //
+            // tsmiRename
+            //
+            this.tsmiRename.Name = "tsmiRename";
+            this.tsmiRename.Size = new System.Drawing.Size(211, 22);
+            this.tsmiRename.Text = "Rename";
+            this.tsmiRename.Click += new System.EventHandler(this.tsmiRename_Click);
             //
             // tsmiExport WeldingTrajecory CoordPointSet node option. Ye this is good.
             //
@@ -1185,6 +1194,7 @@ namespace UserControls
         private System.Windows.Forms.ToolStripSeparator tsmiSpaceActive;
         private System.Windows.Forms.ToolStripMenuItem tsmiActivate;
         private System.Windows.Forms.ToolStripMenuItem tsmiExport;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRename;
         private System.Windows.Forms.TabControl tcGeometryModelResults;
         private System.Windows.Forms.TabPage tpModel;
         private System.Windows.Forms.TabPage tpResults;

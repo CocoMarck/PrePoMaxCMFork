@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
@@ -93,6 +94,8 @@ namespace UserControls
         public int Delete;
         // WeldingTrajectory Export CoordPointSet Si o si ultimote. Fakin id moment.
         public int Export;
+        //
+        public int Rename;
     }
     public enum HideShowOperation
     {
@@ -296,6 +299,7 @@ namespace UserControls
         //
         public event Action<string, string> CreateEvent;
         public event Action<NamedClass, string> ExportEvent; // WedingTrajectory CoordPointSet Export
+        public event Action<NamedClass, string> RenameButtonEvent;
         public event Action<NamedClass, string> EditEvent;
         public event Action<NamedClass, string, string> RenameEvent;
         //
@@ -541,6 +545,10 @@ namespace UserControls
             visible = menuFields.EditStepControls == n;
             tsmiEditStepControls.Visible = visible;
             oneAboveVisible |= visible;
+            // Rename
+            visible = menuFields.Rename == n;
+            tsmiRename.Visible = visible;
+            oneAboveVisible |= visible;
             // Query
             visible = menuFields.Query > 0;
             tsmiQuery.Visible = visible;
@@ -719,6 +727,8 @@ namespace UserControls
             }
             // Edit step controls
             if (item != null && item is Step) menuFields.EditStepControls++;
+            // Rename
+            if (CanRename(node)) menuFields.Rename++;
             // Query
             if (item != null && item is BasePart) menuFields.Query++;
             //Duplicate
@@ -1050,6 +1060,36 @@ namespace UserControls
                     stepName = selectedNode.Parent.Parent.Name;
                 //
                 EditEvent?.Invoke((NamedClass)selectedNode.Tag, stepName);
+            }
+            catch (Exception ex)
+            {
+                ExceptionTools.Show(this, ex);
+            }
+        }
+        private void tsmiRename_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CodersLabTreeView tree = GetActiveTree();
+                if (tree.SelectedNodes.Count != 1) return;
+                //
+                TreeNode selectedNode = tree.SelectedNode;
+                //
+                if (selectedNode.Tag == null) return;
+                //
+                if (CanRename(selectedNode))
+                {
+                    string stepName = null;
+
+                    if (
+                        selectedNode.Parent != null &&
+                        selectedNode.Parent.Parent != null &&
+                        selectedNode.Parent.Tag is Step
+                    )
+                        stepName = selectedNode.Parent.Parent.Name;
+                    //
+                    RenameButtonEvent?.Invoke((NamedClass)selectedNode.Tag, stepName);
+                }
             }
             catch (Exception ex)
             {
