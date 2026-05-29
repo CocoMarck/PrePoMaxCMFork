@@ -173,6 +173,7 @@ namespace UserControls
             this.tsmiCollapseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSpaceDelete = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiExport = new System.Windows.Forms.ToolStripMenuItem(); // WeldingTrajectory CoordPointSet
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
             this.ilStatusIcons = new System.Windows.Forms.ImageList(this.components);
             this.tcGeometryModelResults = new System.Windows.Forms.TabControl();
@@ -255,7 +256,9 @@ namespace UserControls
             this.tsmiExpandAll,
             this.tsmiCollapseAll,
             this.tsmiSpaceDelete,
-            this.tsmiDelete});
+            this.tsmiDelete,
+            this.tsmiExport, // WeldingTrajectory CoordPointSet
+            });
             this.cmsTree.Name = "cmsTree";
             this.cmsTree.Size = new System.Drawing.Size(212, 914);
             // 
@@ -609,6 +612,13 @@ namespace UserControls
             this.tsmiDelete.Size = new System.Drawing.Size(211, 22);
             this.tsmiDelete.Text = "Delete";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
+            //
+            // tsmiExport WeldingTrajecory CoordPointSet node option. Ye this is good.
+            //
+            this.tsmiExport.Name = "tsmiExport";
+            this.tsmiExport.Size = new System.Drawing.Size(211, 22);
+            this.tsmiExport.Text = "Export";
+            this.tsmiExport.Click += new System.EventHandler(this.tsmiExport_Click); // Evento que sucede en `ModelTree.cs`
             // 
             // ilIcons
             // 
@@ -1174,6 +1184,7 @@ namespace UserControls
         private System.Windows.Forms.ToolStripMenuItem tsmiDeactivate;
         private System.Windows.Forms.ToolStripSeparator tsmiSpaceActive;
         private System.Windows.Forms.ToolStripMenuItem tsmiActivate;
+        private System.Windows.Forms.ToolStripMenuItem tsmiExport;
         private System.Windows.Forms.TabControl tcGeometryModelResults;
         private System.Windows.Forms.TabPage tpModel;
         private System.Windows.Forms.TabPage tpResults;

@@ -280,6 +280,7 @@ namespace PrePoMax
                 _modelTree.ClearSelectionEvent += Clear3DSelection;
                 _modelTree.CreateEvent += ModelTree_CreateEvent;
                 _modelTree.EditEvent += ModelTree_EditEvent;
+                _modelTree.ExportEvent += ModelTree_ExportEvent; // Evento de model tree WeldingTrajectory Export
                 _modelTree.RenameEvent += ModelTree_RenameEvent;
                 _modelTree.SetPartColorEvent += ModelTree_SetPartColorEvent;
                 _modelTree.ResetPartColorEvent += ModelTree_ResetPartColorEvent;
@@ -1128,6 +1129,16 @@ namespace PrePoMax
                 else if (namedClass is ResultHistoryOutput rho) EditResultHistoryOutput(rho.Name);
                 else if (namedClass is HistoryResultData hd) ViewResultHistoryOutputData(hd);
                 else if (namedClass is FieldData) ShowLegendSettings();
+            }
+        }
+        private void ModelTree_ExportEvent(NamedClass namedClass, string stepName)
+        {
+            if (namedClass is CoordPointSet)
+            {
+                // WeldingTrajectory. Exportar set de coordenadas
+                // Modo chido. PrePomax Style. New Button. CoordPointSet.
+                //ExportWeldingTrajectory(namedClass.Name);
+                MessageBox.Show($"Export CoordPointSet {namedClass.Name}");
             }
         }
         private void ModelTree_RenameEvent(NamedClass item, string newName, string stepName)

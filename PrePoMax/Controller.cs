@@ -13196,7 +13196,6 @@ namespace PrePoMax
             if (typeof(CoordPointSet).IsAssignableFrom(itemType))
             {
                 // WeldingTrajectories Reneme CoordPointSet Tree Node.
-                Debug.WriteLine("Fake Renaming jejej. GG");
                 RenameCoordPointSet(itemName, newName);
                 return;
             }

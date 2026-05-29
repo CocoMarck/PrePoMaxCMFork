@@ -13,9 +13,11 @@ using CaeMesh;
 using CaeModel;
 using CaeResults;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -89,6 +91,8 @@ namespace UserControls
         public int Collapse;
         //
         public int Delete;
+        // WeldingTrajectory Export CoordPointSet Si o si ultimote. Fakin id moment.
+        public int Export;
     }
     public enum HideShowOperation
     {
@@ -291,6 +295,7 @@ namespace UserControls
         public event Action ClearSelectionEvent;
         //
         public event Action<string, string> CreateEvent;
+        public event Action<NamedClass, string> ExportEvent; // WedingTrajectory CoordPointSet Export
         public event Action<NamedClass, string> EditEvent;
         public event Action<NamedClass, string, string> RenameEvent;
         //
@@ -524,6 +529,10 @@ namespace UserControls
             visible = menuFields.Create == n;
             tsmiCreate.Visible = visible;
             oneAboveVisible |= visible;
+            // Export WeldingTrajectory CoordPointSet. Hacer que se vea o no.
+            visible = menuFields.Export == n;
+            tsmiExport.Visible = visible;
+            oneAboveVisible |= visible;
             // Edit
             visible = menuFields.Edit == n;
             tsmiEdit.Visible = visible;
@@ -694,6 +703,8 @@ namespace UserControls
             if (item != null) menuFields.Types.Add(item.GetType());
             // Create
             if (CanCreate(node)) menuFields.Create++;
+            // Export WeldingTrajectory
+            if (CanExport(node)) menuFields.Export++;
             // Edit
             if (item != null)
             {
@@ -1039,6 +1050,37 @@ namespace UserControls
                     stepName = selectedNode.Parent.Parent.Name;
                 //
                 EditEvent?.Invoke((NamedClass)selectedNode.Tag, stepName);
+            }
+            catch (Exception ex)
+            {
+                ExceptionTools.Show(this, ex);
+            }
+        }
+        // WeldingTrajectory CoordPointSet Export inspirado en Edit
+        private void tsmiExport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CodersLabTreeView tree = GetActiveTree();
+                if (tree.SelectedNodes.Count != 1) return;
+                //
+                TreeNode selectedNode = tree.SelectedNode;
+                //
+                if (selectedNode.Tag == null) return;
+                //
+                if ( CanExport(selectedNode) )
+                {
+                    string stepName = null;
+
+                    if (
+                        selectedNode.Parent != null &&
+                        selectedNode.Parent.Parent != null &&
+                        selectedNode.Parent.Tag is Step
+                    )
+                        stepName = selectedNode.Parent.Parent.Name;
+                    //
+                    ExportEvent?.Invoke((NamedClass)selectedNode.Tag, stepName); // Call Export event
+                }
             }
             catch (Exception ex)
             {
@@ -3242,9 +3284,9 @@ namespace UserControls
             //
             else if (node.TreeView == cltvResults && node.Name == _resultFieldOutputsName) return true;
             else if (node.TreeView == cltvResults && node.Name == _resultHistoryOutputsName) return true;
-            //
             // WeldingTrajectory
             else if (node.TreeView == cltvWelding && node.Name == _weldingTrajectoriesName) return true;
+            //
             else return false;
         }
         private bool CanRename(TreeNode node)
@@ -3276,10 +3318,15 @@ namespace UserControls
             //
             else if (node.Tag is ResultFieldOutput) return true;
             else if (node.Tag is ResultHistoryOutput) return true;
-            //
             // Welding tab
             else if (node.Tag is CoordPointSet) return true;
             //
+            else return false;
+        }
+        private bool CanExport(TreeNode node)
+        {
+            // Export option WeldingTrajectory CoordPointSet. No se necesita pero igual la dejo por trolling.
+            if (node.Tag is CoordPointSet) return true;
             else return false;
         }
         private bool CanDuplicate(TreeNode node)
