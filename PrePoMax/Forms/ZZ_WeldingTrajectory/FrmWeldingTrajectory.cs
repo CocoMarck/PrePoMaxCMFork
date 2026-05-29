@@ -35,7 +35,6 @@ namespace PrePoMax.Forms
 
         // Widgets
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnExportPoints;
         private System.Windows.Forms.DataGridView dgvPoints;
         private System.Windows.Forms.Label lblPoints;
         private System.Windows.Forms.Label lblPointsNumber;
@@ -66,7 +65,6 @@ namespace PrePoMax.Forms
         {
             // Inicializar todos los widgets.
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnExportPoints = new System.Windows.Forms.Button();
             this.dgvPoints = new System.Windows.Forms.DataGridView();
             this.lblPoints = new System.Windows.Forms.Label();
             this.lblPointsNumber = new System.Windows.Forms.Label();
@@ -148,14 +146,6 @@ namespace PrePoMax.Forms
             btnAddCoordWithPoint.Location = new Point(223, 134);
             btnAddCoordWithPoint.Click += btnAddCoordWithPoint_Click;
 
-            // btnExportPoints
-            btnExportPoints.Name = "btnExportPoints";
-            btnExportPoints.Text = "Export Points";
-            btnExportPoints.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnExportPoints.Size = new Size(100, 23);
-            btnExportPoints.Location = new Point(126, 230);
-            btnExportPoints.Click += btnExportPoints_Click;
-
             // FrmWeldingTrajectory
             this.Text = "Welding Trajectory";
             this.Name = "FrmWeldingTrajectory";
@@ -172,7 +162,6 @@ namespace PrePoMax.Forms
             // Add controls
             this.Controls.Add(tbPointSetName);
             this.Controls.Add(btnClose);
-            this.Controls.Add(btnExportPoints);
             this.Controls.Add(dgvPoints);
             this.Controls.Add(lblPoints);
             this.Controls.Add(lblPointsNumber);
@@ -337,24 +326,6 @@ namespace PrePoMax.Forms
             }
         }
 
-
-        private void btnExportPoints_Click(object sender, EventArgs e)
-        {
-            using (SaveFileDialog sfd = new SaveFileDialog())
-            {
-                sfd.Filter = "CSV files (*.csv)|*csv|All files (*.*)|*.*";
-                sfd.Title = "Save file CSV";
-                sfd.FileName = $"{_coordPointSets.Name}_Tejectories.csv";
-
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    if (CoordPointExporter.ExportXYZ(_coordPointSets, sfd.FileName))
-                    {
-                        MessageBox.Show($"Saved: `{sfd.FileName}`");
-                    }
-                }
-            }
-        }
         private void tbPointSetName_Leave(object sender, EventArgs e)
         {
             string name = tbPointSetName.Text.Trim();

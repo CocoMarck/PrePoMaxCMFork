@@ -15,6 +15,7 @@ using CaeResults;
 using FileInOut.Output;
 using PrePoMax.Commands;
 using PrePoMax.Forms;
+using PrePoMax.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -997,6 +998,26 @@ namespace PrePoMax
             }
 
         }
+        private void ExportWeldingTrajectory(string weldingTrajectoryName)
+        {
+            // CoordPointExporter is a internal class. And very crazy.
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                // Obtener set de puntos y exportarlos.
+                CoordPointSet coordPointSet = _controller.Model.Mesh.CoordPointSets[weldingTrajectoryName];
+                sfd.Filter = "CSV files (*.csv)|*csv|All files (*.*)|*.*";
+                sfd.Title = "Save file CSV";
+                sfd.FileName = $"{coordPointSet.Name}_Tejectories.csv";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    if (CoordPointExporter.ExportXYZ(coordPointSet, sfd.FileName))
+                    {
+                        MessageBox.Show($"Saved: `{sfd.FileName}`");
+                    }
+                }
+            }
+        }
 
         #region ModelTree Events ###################################################################################################
         //
@@ -1137,8 +1158,7 @@ namespace PrePoMax
             {
                 // WeldingTrajectory. Exportar set de coordenadas
                 // Modo chido. PrePomax Style. New Button. CoordPointSet.
-                //ExportWeldingTrajectory(namedClass.Name);
-                MessageBox.Show($"Export CoordPointSet {namedClass.Name}");
+                ExportWeldingTrajectory(namedClass.Name);
             }
         }
         private void ModelTree_RenameEvent(NamedClass item, string newName, string stepName)
